@@ -18,19 +18,19 @@ const Button = ({
   size = "medium",
   variant = "primary",
   children,
+  className,
   ...props
 }: IButtonProps) => {
   return (
     <button
       className={clsx(
-        "flex items-center gap-x-1 shadow-button font-bold py-1 px-4 rounded-lg cursor-pointer",
+        "flex justify-center items-center gap-x-1 shadow-button font-bold py-1 px-4 rounded-lg cursor-pointer",
         props.disabled ? VARIANT_MAP.get("disabled") : VARIANT_MAP.get(variant),
         SIZE_MAP.get(size),
-        props.className
+        className
       )}
       {...props}
     >
-      <div></div>
       {children}
     </button>
   );
