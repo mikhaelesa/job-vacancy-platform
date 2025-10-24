@@ -11,12 +11,8 @@ interface IJobFormProps {
 
 const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => setIsOpen?.(false)}
-      className="items-center justify-center bg-[rgba(0,0,0,.25)] min-w-screen min-h-screen inset-0 m-0 overflow-y-scroll no-scrollbar"
-    >
-      <Modal.Content className="rounded-[10px] w-full max-w-[900px]">
+    <Modal isOpen={isOpen} onClose={() => setIsOpen?.(false)}>
+      <Modal.Content className="w-full max-w-[900px]">
         <div className="p-6 flex justify-between items-center border-b border-neutral-40">
           <p className="text-xl font-bold">Job Opening</p>
           <button

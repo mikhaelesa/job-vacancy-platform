@@ -1,5 +1,3 @@
-"use client";
-
 import IcSearch from "@/src/components/atoms/Icons/IcSearch.component";
 import ErrorNoJobs from "@/src/components/molecules/ErrorNoJobs";
 import Navbar from "@/src/components/molecules/Navbar";
