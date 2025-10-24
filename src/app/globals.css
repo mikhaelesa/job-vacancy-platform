@@ -74,3 +74,8 @@
   --shadow-modal: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
   /* #endregion */
 }
+
+body.modal-open {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0);
+}

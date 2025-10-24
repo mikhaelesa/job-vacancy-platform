@@ -1,7 +1,11 @@
 import Button from "@/src/components/atoms/Button";
 import Image from "next/image";
 
-const ErrorNoJobs = () => {
+interface IErrorNoJobsProps {
+  onClickCreateNewJob?: () => void;
+}
+
+const ErrorNoJobs = ({ onClickCreateNewJob }: IErrorNoJobsProps) => {
   return (
     <div className="flex flex-col gap-y-3 items-center justify-center h-full min-h-[calc(100dvh-64px)]">
       <div>
@@ -20,7 +24,11 @@ const ErrorNoJobs = () => {
           Create a job opening now and start the candidate process.
         </p>
       </div>
-      <Button size="large" variant="alternative-primary" disabled>
+      <Button
+        onClick={onClickCreateNewJob}
+        size="large"
+        variant="alternative-primary"
+      >
         Create a new job
       </Button>
     </div>

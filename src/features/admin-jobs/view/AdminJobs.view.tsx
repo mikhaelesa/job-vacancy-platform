@@ -5,14 +5,21 @@ import ErrorNoJobs from "@/src/components/molecules/ErrorNoJobs";
 import Navbar from "@/src/components/molecules/Navbar";
 import TextInput from "@/src/components/organisms/TextInput";
 import ErrorBoundary from "@/src/components/templates/ErrorBoundary";
+import JobForm from "@/src/components/templates/JobForm";
+import { useState } from "react";
 import AdminJobCard from "../components/AdminJobCard";
 import SideCTA from "../components/SideCTA";
 
 const AdminJobs = () => {
+  const [isJobFormOpen, setIsJobFormOpen] = useState(false);
+
+  const handleOpenJobForm = () => setIsJobFormOpen(true);
   return (
     <>
       <Navbar />
-      <ErrorBoundary errorComponent={<ErrorNoJobs />}>
+      <ErrorBoundary
+        errorComponent={<ErrorNoJobs onClickCreateNewJob={handleOpenJobForm} />}
+      >
         <main className="relative">
           <div className="flex gap-x-6 pt-9 px-6">
             <div className="w-full flex flex-col gap-y-4">
@@ -33,10 +40,11 @@ const AdminJobs = () => {
                 <AdminJobCard />
               </div>
             </div>
-            <SideCTA />
+            <SideCTA onClickCreateNewJob={handleOpenJobForm} />
           </div>
         </main>
       </ErrorBoundary>
+      <JobForm isOpen={isJobFormOpen} setIsOpen={setIsJobFormOpen} />
     </>
   );
 };

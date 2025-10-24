@@ -1,7 +1,11 @@
 import Button from "@/src/components/atoms/Button";
 import Image from "next/image";
 
-const SideCTA = () => {
+interface ISideCTAProps {
+  onClickCreateNewJob?: () => void;
+}
+
+const SideCTA = ({ onClickCreateNewJob }: ISideCTAProps) => {
   return (
     <aside>
       <div className="flex flex-col gap-y-6 p-6 rounded-2xl relative overflow-hidden before:absolute before:inset-0 before:bg-black before:opacity-[0.72] before:z-10">
@@ -21,7 +25,7 @@ const SideCTA = () => {
             Create jobs, invite, and hire with ease
           </p>
         </div>
-        <Button size="large" className="z-10">
+        <Button onClick={onClickCreateNewJob} size="large" className="z-10">
           Create a new job
         </Button>
       </div>
