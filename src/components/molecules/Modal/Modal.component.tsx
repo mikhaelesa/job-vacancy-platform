@@ -29,7 +29,11 @@ const Modal = ({ isOpen = false, children, ...props }: IModalProps) => {
   }, [isOpen]);
 
   return (
-    <dialog ref={dialogRef} {...props}>
+    <dialog
+      className="bg-[rgba(0,0,0,.25)] min-w-screen min-h-screen inset-0 m-0 overflow-y-auto no-scrollbar"
+      ref={dialogRef}
+      {...props}
+    >
       {children}
     </dialog>
   );
@@ -41,8 +45,11 @@ Modal.Content = function ModalContent({
   ...props
 }: HTMLAttributes<HTMLElement>) {
   return (
-    <div className="min-h-screen flex justify-center items-center my-20">
-      <article className={clsx("bg-neutral-10", className)} {...props}>
+    <div className="min-h-[calc(100vh-64px)] flex justify-center items-center m-4">
+      <article
+        className={clsx("rounded-[10px] bg-neutral-10", className)}
+        {...props}
+      >
         {children}
       </article>
     </div>
