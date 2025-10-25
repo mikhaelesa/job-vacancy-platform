@@ -56,7 +56,8 @@ const useLoginManager = () => {
     if (!loginData.email || !loginData.password) return;
 
     const { error } = await loginMutation.mutateAsync(loginData);
-    if (!!error) setApiError("Invalid credentials.");
+    if (!!error) return setApiError("Invalid credentials.");
+    paramsManager.removeParams([SEARCH_PARAMS.login]);
   };
 
   const getChangeEmailHandler: ChangeEventHandler<HTMLInputElement> = (e) =>
