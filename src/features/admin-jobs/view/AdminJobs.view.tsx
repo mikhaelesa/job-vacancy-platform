@@ -1,9 +1,11 @@
 import IcSearch from "@/src/components/atoms/Icons/IcSearch.component";
+import withRecruiterRole from "@/src/components/hoc/withRecruiterRole/withRecruiterRole.component";
 import ErrorNoJobs from "@/src/components/molecules/ErrorNoJobs";
 import Navbar from "@/src/components/molecules/Navbar";
 import TextInput from "@/src/components/organisms/TextInput";
 import ErrorBoundary from "@/src/components/templates/ErrorBoundary";
 import JobForm from "@/src/components/templates/JobForm";
+import { PATHS } from "@/src/constants/paths.constant";
 import { useState } from "react";
 import AdminJobCard from "../components/AdminJobCard";
 import SideCTA from "../components/SideCTA";
@@ -16,6 +18,7 @@ const AdminJobs = () => {
     <>
       <Navbar />
       <ErrorBoundary
+        isError
         errorComponent={<ErrorNoJobs onClickCreateNewJob={handleOpenJobForm} />}
       >
         <main className="relative">
@@ -47,4 +50,6 @@ const AdminJobs = () => {
   );
 };
 
-export default AdminJobs;
+export default withRecruiterRole(AdminJobs, {
+  onUnauthorized: (router) => router.replace(PATHS.root),
+});
