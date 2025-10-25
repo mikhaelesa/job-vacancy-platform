@@ -27,7 +27,7 @@ const InputBase = ({
   helperMessageIcon,
 }: IInputProps) => {
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-2 w-full">
       <label>
         {label && (
           <span className="text-s">
@@ -37,7 +37,8 @@ const InputBase = ({
         )}
         <div
           className={clsx(
-            "mt-2 flex items-center gap-x-2 border-2 rounded-lg px-4 py-3",
+            "flex items-center gap-x-2 border-2 rounded-lg px-4 py-3",
+            label && "mt-2",
             {
               "bg-neutral-30 border-neutral-40": isDisabled,
               "border-danger-main": !isDisabled && isError,
