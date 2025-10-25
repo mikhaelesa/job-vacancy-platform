@@ -75,6 +75,16 @@
   /* #endregion */
 }
 
+@theme {
+  --animation-spin: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 body.modal-open {
   overflow: hidden;
   padding-right: var(--scrollbar-width, 0);
