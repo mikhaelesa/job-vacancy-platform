@@ -6,21 +6,37 @@ interface IChipProps {
   rightIcon?: ReactNode;
   label?: string;
   isActive?: boolean;
+  isDisabled?: boolean;
 }
 
-const Chip = ({ leftIcon, label, rightIcon, isActive }: IChipProps) => {
+const Chip = ({
+  leftIcon,
+  isDisabled,
+  label,
+  rightIcon,
+  isActive,
+}: IChipProps) => {
   return (
     <button
       className={clsx(
         "text-m border rounded-full w-fit flex gap-x-2 px-3 py-1 items-center justify-center",
-        isActive
-          ? "border-primary-main text-primary-main"
-          : "border-neutral-40 text-neutral-90"
+        {
+          "bg-neutral-30 text-neutral-60 border-neutral-40 cursor-not-allowed":
+            isDisabled,
+          "border-primary-main text-primary-main cursor-pointer": isActive,
+          "border-neutral-40 text-neutral-90 cursor-pointer":
+            !isDisabled && !isActive,
+        }
       )}
+      disabled={isDisabled}
     >
       {leftIcon && (
         <div
-          className={clsx(isActive ? "text-primary-main" : "text-neutral-70")}
+          className={clsx({
+            "text-neutral-60": isDisabled,
+            "text-primary-main": isActive,
+            "text-neutral-70": !isDisabled && !isActive,
+          })}
         >
           {leftIcon}
         </div>
@@ -28,7 +44,11 @@ const Chip = ({ leftIcon, label, rightIcon, isActive }: IChipProps) => {
       {label && label}
       {rightIcon && (
         <div
-          className={clsx(isActive ? "text-primary-main" : "text-neutral-70")}
+          className={clsx({
+            "text-neutral-60": isDisabled,
+            "text-primary-main": isActive,
+            "text-neutral-70": !isDisabled && !isActive,
+          })}
         >
           {rightIcon}
         </div>
