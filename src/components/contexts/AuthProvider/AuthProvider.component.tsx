@@ -34,7 +34,9 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     });
 
     const { data } = supabaseClient.auth.onAuthStateChange((_, session) => {
+      setSession(session || null);
       setUser(session?.user || null);
+      setRole(session?.user.user_metadata.role);
     });
 
     return () => data.subscription.unsubscribe();
