@@ -1,0 +1,10 @@
+.DraftEditor-root {
+  min-height: 88px;
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.Editor--hide-placeholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
