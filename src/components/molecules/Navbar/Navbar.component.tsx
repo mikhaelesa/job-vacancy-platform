@@ -1,8 +1,11 @@
 import Avatar from "@/src/components/atoms/Avatar";
+import { PATHS } from "@/src/constants/paths.constant";
 import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
 import { supabaseClient } from "@/src/constants/supabaseClient.constant";
+import { USER_ROLE } from "@/src/constants/userRole.constant";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { useParamsManager } from "@/src/hooks/useParamsManager.hook";
+import Link from "next/link";
 import Button from "../../atoms/Button";
 import IcChevronDown from "../../atoms/Icons/IcChevronDown.component";
 import Dropdown from "../Dropdown";
@@ -10,6 +13,8 @@ import Dropdown from "../Dropdown";
 const Navbar = () => {
   const auth = useAuth();
   const paramsManager = useParamsManager();
+
+  const isRecruiter = auth.user?.user_metadata.role === USER_ROLE.recruiter;
 
   const handleLogin = () =>
     paramsManager.appendParams({ [SEARCH_PARAMS.login]: "true" });
@@ -38,7 +43,7 @@ const Navbar = () => {
                 )}
               </Dropdown.Head>
               <Dropdown.Body>
-                <div className="absolute w-[200px] top-10 right-0 rounded-lg bg-neutral-10 shadow-modal overflow-hidden">
+                <div className="absolute w-[200px] top-10 right-0 rounded-lg bg-neutral-10 shadow-modal overflow-hidden flex flex-col z-20">
                   <Dropdown.Item>
                     {() => (
                       <button
@@ -50,16 +55,18 @@ const Navbar = () => {
                       </button>
                     )}
                   </Dropdown.Item>
-                  <Dropdown.Item>
-                    {() => (
-                      <button
-                        type="button"
-                        className="p-2 cursor-pointer w-full hover:bg-primary-hover hover:text-neutral-10"
-                      >
-                        <p className="text-m text-left">Recruiter Dashboard</p>
-                      </button>
-                    )}
-                  </Dropdown.Item>
+                  {isRecruiter && (
+                    <Dropdown.Item>
+                      {() => (
+                        <Link
+                          href={PATHS.adminJobs}
+                          className="p-2 cursor-pointer w-full hover:bg-primary-hover hover:text-neutral-10 text-m"
+                        >
+                          Recruiter Dashboard
+                        </Link>
+                      )}
+                    </Dropdown.Item>
+                  )}
                 </div>
               </Dropdown.Body>
             </Dropdown>
