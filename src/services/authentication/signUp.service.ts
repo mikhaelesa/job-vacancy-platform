@@ -11,12 +11,9 @@ export const signUpService = <
 >(
   data: ISignUpRequestBody
 ): Promise<AxiosResponse<T, ISignUpRequestBody>> => {
-  return apiClient.request(
-    {
-      data,
-      method: "POST",
-      url: "/api/authentication/sign-up",
-    },
-    true
-  );
+  return apiClient.request({
+    data,
+    method: "POST",
+    url: "/api/authentication/sign-up",
+  });
 };

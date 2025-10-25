@@ -11,12 +11,9 @@ export const checkEmailService = <
 >(
   data: ICheckEmailRequestBody
 ): Promise<AxiosResponse<T, ICheckEmailRequestBody>> => {
-  return apiClient.request(
-    {
-      data,
-      method: "POST",
-      url: "/api/authentication/check-email",
-    },
-    true
-  );
+  return apiClient.request({
+    data,
+    method: "POST",
+    url: "/api/authentication/check-email",
+  });
 };
