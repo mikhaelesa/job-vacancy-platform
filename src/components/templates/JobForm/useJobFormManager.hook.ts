@@ -4,6 +4,7 @@ import {
 } from "@/src/dto/createJob.dto";
 import useGetJobTypesQuery from "@/src/hooks/queries/useGetJobTypesQuery.hook";
 import { ChangeEventHandler, useState } from "react";
+import { RichTextInputChangeHandler } from "../../organisms/RichTextInput/RichTextInput.type";
 import { ISelectOption } from "../../organisms/SelectInput/SelectInput.component";
 
 const useJobFormManager = () => {
@@ -43,6 +44,11 @@ const useJobFormManager = () => {
     setCreateJobData((prev) => ({
       ...prev,
       jobTypeId: parseInt(option.value),
+    }));
+  const getChangeDescriptionHandler: RichTextInputChangeHandler = (html) =>
+    setCreateJobData((prev) => ({
+      ...prev,
+      description: html,
     }));
   const getChangeMinimumSalaryHandler = (value: number) =>
     setCreateJobData((prev) => ({
@@ -124,6 +130,7 @@ const useJobFormManager = () => {
     getChangePhoneNumberSettingHandler,
     getChangeLinkedinSettingHandler,
     getChangeDateOfBirthSettingHandler,
+    getChangeDescriptionHandler,
   };
 };
 

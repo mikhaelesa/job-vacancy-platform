@@ -8,6 +8,7 @@ import Chip from "../../molecules/Chip";
 import CurrencyInput from "../../organisms/CurrencyInput";
 import NumberInput from "../../organisms/NumberInput";
 import RadioChip from "../../organisms/RadioChip/RadioChip.component";
+import RichTextInput from "../../organisms/RichTextInput";
 import LoadingBoundary from "../LoadingBoundary";
 import useJobFormManager from "./useJobFormManager.hook";
 
@@ -49,7 +50,12 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               options={manager.jobTypesOptions}
               onChange={manager.getChangeJobTypeHandler}
             />
-            <TextInput label="Job Description" isRequired placeholder="Ex." />
+            <RichTextInput
+              label="Job Description"
+              isRequired
+              value={manager.createJobData.description}
+              onChange={manager.getChangeDescriptionHandler}
+            />
             <NumberInput
               label="Number of Candidate Needed"
               isRequired
