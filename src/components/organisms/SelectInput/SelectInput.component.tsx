@@ -55,11 +55,11 @@ const SelectInput = ({
             >
               <input
                 type="text"
-                disabled
-                className="text-m placeholder:text-neutral-60 w-full pointer-events-none"
+                className="text-m placeholder-neutral-60 w-full pointer-events-none"
                 name={name}
                 placeholder={placeholder}
-                value={selectedOption?.label || undefined}
+                value={selectedOption?.label || ""}
+                disabled
               />
             </InputBase>
           </button>
