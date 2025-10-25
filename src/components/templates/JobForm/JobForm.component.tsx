@@ -6,6 +6,8 @@ import TextInput from "@/src/components/organisms/TextInput";
 import { Dispatch, SetStateAction } from "react";
 import Chip from "../../molecules/Chip";
 import CurrencyInput from "../../organisms/CurrencyInput";
+import NumberInput from "../../organisms/NumberInput";
+import RadioChip from "../../organisms/RadioChip/RadioChip.component";
 import LoadingBoundary from "../LoadingBoundary";
 import useJobFormManager from "./useJobFormManager.hook";
 
@@ -36,6 +38,8 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               isRequired
               name="jobName"
               placeholder="Ex. Front End Engineer"
+              value={manager.createJobData.name}
+              onChange={manager.getChangeJobNameHandler}
             />
             <SelectInput
               label="Job Type"
@@ -43,12 +47,15 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               isRequired
               name="jobType"
               options={manager.jobTypesOptions}
+              onChange={manager.getChangeJobTypeHandler}
             />
             <TextInput label="Job Description" isRequired placeholder="Ex." />
-            <TextInput
+            <NumberInput
               label="Number of Candidate Needed"
               isRequired
               placeholder="Ex. 2"
+              value={manager.createJobData.candidateNeeded}
+              onChange={manager.getChangeCandidateNeededHandler}
             />
             <div
               className="flex flex-col gap-y-4 border-t border-transparent
@@ -59,10 +66,14 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
                 <CurrencyInput
                   label="Minimum Estimated Salary"
                   placeholder="7.000.000"
+                  value={manager.createJobData.minimumSalary}
+                  onChange={manager.getChangeMinimumSalaryHandler}
                 />
                 <CurrencyInput
                   label="Maximum Estimated Salary"
                   placeholder="8.000.000"
+                  value={manager.createJobData.maximumSalary}
+                  onChange={manager.getChangeMaximumSalaryHandler}
                 />
               </div>
             </div>
@@ -89,17 +100,71 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
                 <p className="text-m text-neutral-90">Gender</p>
                 <div className="flex items-center gap-x-2">
-                  <Chip isActive label="Mandatory" />
-                  <Chip label="Optional" />
-                  <Chip label="Off" />
+                  <RadioChip
+                    name="gender"
+                    value="mandatory"
+                    label="Mandatory"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.gender === "mandatory"
+                    }
+                    onChange={manager.getChangeGenderSettingHandler}
+                  />
+                  <RadioChip
+                    name="gender"
+                    value="optional"
+                    label="Optional"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.gender === "optional"
+                    }
+                    onChange={manager.getChangeGenderSettingHandler}
+                  />
+                  <RadioChip
+                    name="gender"
+                    value="off"
+                    label="Off"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.gender === "off"
+                    }
+                    onChange={manager.getChangeGenderSettingHandler}
+                  />
                 </div>
               </div>
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
                 <p className="text-m text-neutral-90">Domicile</p>
                 <div className="flex items-center gap-x-2">
-                  <Chip isActive label="Mandatory" />
-                  <Chip label="Optional" />
-                  <Chip label="Off" />
+                  <RadioChip
+                    name="domicile"
+                    value="mandatory"
+                    label="Mandatory"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.domicile === "mandatory"
+                    }
+                    onChange={manager.getChangeDomicileSettingHandler}
+                  />
+                  <RadioChip
+                    name="domicile"
+                    value="optional"
+                    label="Optional"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.domicile === "optional"
+                    }
+                    onChange={manager.getChangeDomicileSettingHandler}
+                  />
+                  <RadioChip
+                    name="domicile"
+                    value="off"
+                    label="Off"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.domicile === "off"
+                    }
+                    onChange={manager.getChangeDomicileSettingHandler}
+                  />
                 </div>
               </div>
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
@@ -113,25 +178,106 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
                 <p className="text-m text-neutral-90">Phone number</p>
                 <div className="flex items-center gap-x-2">
-                  <Chip isActive label="Mandatory" />
-                  <Chip label="Optional" />
-                  <Chip label="Off" />
+                  <RadioChip
+                    name="phoneNumber"
+                    value="mandatory"
+                    label="Mandatory"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.phoneNumber === "mandatory"
+                    }
+                    onChange={manager.getChangePhoneNumberSettingHandler}
+                  />
+                  <RadioChip
+                    name="phoneNumber"
+                    value="optional"
+                    label="Optional"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.phoneNumber === "optional"
+                    }
+                    onChange={manager.getChangePhoneNumberSettingHandler}
+                  />
+                  <RadioChip
+                    name="phoneNumber"
+                    value="off"
+                    label="Off"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.phoneNumber === "off"
+                    }
+                    onChange={manager.getChangePhoneNumberSettingHandler}
+                  />
                 </div>
               </div>
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
                 <p className="text-m text-neutral-90">Linkedin link</p>
                 <div className="flex items-center gap-x-2">
-                  <Chip isActive label="Mandatory" />
-                  <Chip label="Optional" />
-                  <Chip label="Off" />
+                  <RadioChip
+                    name="linkedin"
+                    value="mandatory"
+                    label="Mandatory"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.linkedin === "mandatory"
+                    }
+                    onChange={manager.getChangeLinkedinSettingHandler}
+                  />
+                  <RadioChip
+                    name="linkedin"
+                    value="optional"
+                    label="Optional"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.linkedin === "optional"
+                    }
+                    onChange={manager.getChangeLinkedinSettingHandler}
+                  />
+                  <RadioChip
+                    name="linkedin"
+                    value="off"
+                    label="Off"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.linkedin === "off"
+                    }
+                    onChange={manager.getChangeLinkedinSettingHandler}
+                  />
                 </div>
               </div>
               <div className="flex justify-between items-center p-2 border-b border-neutral-40">
                 <p className="text-m text-neutral-90">Date of birth</p>
                 <div className="flex items-center gap-x-2">
-                  <Chip isActive label="Mandatory" />
-                  <Chip label="Optional" />
-                  <Chip label="Off" />
+                  <RadioChip
+                    name="dateOfBirth"
+                    value="mandatory"
+                    label="Mandatory"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.dateOfBirth === "mandatory"
+                    }
+                    onChange={manager.getChangeDateOfBirthSettingHandler}
+                  />
+                  <RadioChip
+                    name="dateOfBirth"
+                    value="optional"
+                    label="Optional"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.dateOfBirth === "optional"
+                    }
+                    onChange={manager.getChangeDateOfBirthSettingHandler}
+                  />
+                  <RadioChip
+                    name="dateOfBirth"
+                    value="off"
+                    label="Off"
+                    isActive={
+                      manager.createJobData.minimumProfileInformation
+                        ?.dateOfBirth === "off"
+                    }
+                    onChange={manager.getChangeDateOfBirthSettingHandler}
+                  />
                 </div>
               </div>
             </div>

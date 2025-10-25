@@ -1,3 +1,5 @@
+export type TProfileInformation = "mandatory" | "optional" | "off";
+
 export interface ICreateJobRequestBody {
   name: string;
   jobTypeId: number;
@@ -6,13 +8,13 @@ export interface ICreateJobRequestBody {
   minimumSalary: number;
   maximumSalary: number;
   minimumProfileInformation: {
-    fullName?: "mandatory" | "optional" | "off";
-    photoProfile?: "mandatory" | "optional" | "off";
-    gender?: "mandatory" | "optional" | "off";
-    domicile?: "mandatory" | "optional" | "off";
-    email?: "mandatory" | "optional" | "off";
-    phoneNumber?: "mandatory" | "optional" | "off";
-    linkedin?: "mandatory" | "optional" | "off";
-    dateOfBirth?: "mandatory" | "optional" | "off";
+    fullName?: TProfileInformation;
+    photoProfile?: TProfileInformation;
+    gender?: TProfileInformation;
+    domicile?: TProfileInformation;
+    email?: TProfileInformation;
+    phoneNumber?: TProfileInformation;
+    linkedin?: TProfileInformation;
+    dateOfBirth?: TProfileInformation;
   };
 }

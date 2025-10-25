@@ -1,8 +1,6 @@
-import InputBase from "@/src/components/molecules/InputBase";
-import { currencyFormatter } from "@/src/helpers/currencyFormatter.helper";
 import { InputController } from "@/src/helpers/inputController.helper";
-import { sanitizePriceInput } from "@/src/helpers/sanitizePriceInput.helper";
 import { ChangeEventHandler, ComponentProps } from "react";
+import InputBase from "../../molecules/InputBase";
 
 interface ICurrencyInputProps extends ComponentProps<typeof InputBase> {
   placeholder?: string;
@@ -11,24 +9,19 @@ interface ICurrencyInputProps extends ComponentProps<typeof InputBase> {
   value?: number;
 }
 
-const CurrencyInput = ({
+const NumberInput = ({
+  onChange,
   placeholder,
   name,
-  onChange,
   value,
   ...props
 }: ICurrencyInputProps) => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target.value;
-    const parsedValue = sanitizePriceInput(value);
-    onChange?.(parsedValue);
+    if (value) onChange?.(parseInt(value));
   };
-
   return (
-    <InputBase
-      {...props}
-      iconLeft={<span className="font-bold text-m">Rp</span>}
-    >
+    <InputBase {...props}>
       <input
         type="text"
         placeholder={placeholder}
@@ -37,10 +30,10 @@ const CurrencyInput = ({
         onKeyDown={InputController.onlyNumber}
         onPaste={InputController.pasteOnlyNumber}
         onChange={handleChange}
-        value={value ? currencyFormatter(value).toIDR().replace("Rp", "") : ""}
+        value={value}
       />
     </InputBase>
   );
 };
 
-export default CurrencyInput;
+export default NumberInput;

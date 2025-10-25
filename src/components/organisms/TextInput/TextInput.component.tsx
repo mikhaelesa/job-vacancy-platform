@@ -1,12 +1,20 @@
 import InputBase from "@/src/components/molecules/InputBase";
-import { ComponentProps, useState } from "react";
+import { ChangeEventHandler, ComponentProps, useState } from "react";
 
 interface ITextInputProps extends ComponentProps<typeof InputBase> {
   placeholder?: string;
   name?: string;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-const TextInput = ({ placeholder, name, ...props }: ITextInputProps) => {
+const TextInput = ({
+  placeholder,
+  name,
+  onChange,
+  value,
+  ...props
+}: ITextInputProps) => {
   const [isActive, setIsActive] = useState(false);
   return (
     <InputBase isActive={isActive} {...props}>
@@ -18,6 +26,8 @@ const TextInput = ({ placeholder, name, ...props }: ITextInputProps) => {
         disabled={props.isDisabled}
         onFocus={() => setIsActive(true)}
         onBlur={() => setIsActive(false)}
+        onChange={onChange}
+        value={value}
         name={name}
       />
     </InputBase>
