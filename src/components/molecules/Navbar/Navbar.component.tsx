@@ -1,4 +1,6 @@
 import Avatar from "@/src/components/atoms/Avatar";
+import Button from "@/src/components/atoms/Button";
+import IcChevronDown from "@/src/components/atoms/Icons/IcChevronDown.component";
 import { PATHS } from "@/src/constants/paths.constant";
 import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
 import { supabaseClient } from "@/src/constants/supabaseClient.constant";
@@ -6,21 +8,22 @@ import { USER_ROLE } from "@/src/constants/userRole.constant";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { useParamsManager } from "@/src/hooks/useParamsManager.hook";
 import Link from "next/link";
-import Button from "../../atoms/Button";
-import IcChevronDown from "../../atoms/Icons/IcChevronDown.component";
+import { useRouter } from "next/navigation";
 import Dropdown from "../Dropdown";
 
 const Navbar = () => {
   const auth = useAuth();
+  const router = useRouter();
   const paramsManager = useParamsManager();
 
-  const isRecruiter = auth.user?.user_metadata.role === USER_ROLE.recruiter;
+  const isRecruiter = auth.role === USER_ROLE.recruiter;
 
   const handleLogin = () =>
     paramsManager.appendParams({ [SEARCH_PARAMS.login]: "true" });
 
   const handleLogout = async () => {
     await supabaseClient.auth.signOut();
+    router.replace(PATHS.root);
   };
 
   return (
