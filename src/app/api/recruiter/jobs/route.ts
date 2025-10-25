@@ -26,8 +26,6 @@ export async function POST(req: Request) {
 
   const body: ICreateJobRequestBody = await req.json();
 
-  console.log(JSON.stringify(CreateJobSchema.safeParse(body), null, 2));
-
   const parseResult = CreateJobSchema.safeParse(body);
   if (!parseResult.success) {
     return Response.json(

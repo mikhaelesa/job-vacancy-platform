@@ -4,6 +4,13 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
+import { supabaseClient } from "../constants/supabaseClient.constant";
+
+let cachedToken: string | null = null;
+
+supabaseClient.auth.onAuthStateChange((_event, session) => {
+  cachedToken = session?.access_token ?? null;
+});
 
 const createApiInstance = (config?: AxiosRequestConfig): AxiosInstance => {
   return axios.create({
@@ -22,13 +29,12 @@ class ApiClient {
 
   public async request<T, D>(config: AxiosRequestConfig, withToken = false) {
     try {
-      // const token = Cookies.get("accessToken");
-      // if (withToken) {
-      //   config.headers = {
-      //     ...config.headers,
-      //     Authorization: `Bearer ${token}`,
-      //   };
-      // }
+      if (withToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${cachedToken}`,
+        };
+      }
       const response = await this.api.request<T, AxiosResponse<T, D>, D>(
         config
       );
