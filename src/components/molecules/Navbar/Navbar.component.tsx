@@ -22,8 +22,8 @@ const Navbar = () => {
     paramsManager.appendParams({ [SEARCH_PARAMS.login]: "true" });
 
   const handleLogout = async () => {
-    await supabaseClient.auth.signOut();
     router.replace(PATHS.root);
+    await supabaseClient.auth.signOut();
   };
 
   return (
