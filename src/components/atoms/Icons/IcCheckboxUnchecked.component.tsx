@@ -1,0 +1,24 @@
+import { SVGAttributes } from "react";
+
+const IcCheckboxUnchecked = (props?: SVGAttributes<SVGSVGElement>) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      color="#000"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M18 3.5H6C4.61929 3.5 3.5 4.61929 3.5 6V18C3.5 19.3807 4.61929 20.5 6 20.5H18C19.3807 20.5 20.5 19.3807 20.5 18V6C20.5 4.61929 19.3807 3.5 18 3.5ZM6 2C3.79086 2 2 3.79086 2 6V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V6C22 3.79086 20.2091 2 18 2H6Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};
+
+export default IcCheckboxUnchecked;
