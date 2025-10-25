@@ -1,9 +1,13 @@
 "use client";
 
-import AdminJobs from "@/src/features/admin-jobs/view";
+import dynamic from "next/dynamic";
+
+const AdminJobsView = dynamic(() => import("@/src/features/admin-jobs/view"), {
+  ssr: false,
+});
 
 const AdminJobsPage = () => {
-  return <AdminJobs />;
+  return <AdminJobsView />;
 };
 
 export default AdminJobsPage;
