@@ -19,7 +19,7 @@ const EmailInput = ({
   return (
     <InputBase isActive={isActive} {...props}>
       <input
-        className="outline-none w-full text-m"
+        className="outline-none w-full text-m placeholder-neutral-60"
         type="email"
         placeholder={placeholder}
         // required={props.isRequired}

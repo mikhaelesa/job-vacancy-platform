@@ -11,7 +11,7 @@ const TextInput = ({ placeholder, name, ...props }: ITextInputProps) => {
   return (
     <InputBase isActive={isActive} {...props}>
       <input
-        className="outline-none w-full text-m"
+        className="outline-none w-full text-m placeholder-neutral-60"
         type="text"
         placeholder={placeholder}
         required={props.isRequired}
