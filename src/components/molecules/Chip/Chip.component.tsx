@@ -17,7 +17,7 @@ const Chip = ({
   isActive,
 }: IChipProps) => {
   return (
-    <button
+    <div
       className={clsx(
         "text-m border rounded-full w-fit flex gap-x-2 px-3 py-1 items-center justify-center",
         {
@@ -28,7 +28,6 @@ const Chip = ({
             !isDisabled && !isActive,
         }
       )}
-      disabled={isDisabled}
     >
       {leftIcon && (
         <div
@@ -53,7 +52,7 @@ const Chip = ({
           {rightIcon}
         </div>
       )}
-    </button>
+    </div>
   );
 };
 
