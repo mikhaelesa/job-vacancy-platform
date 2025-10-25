@@ -2,7 +2,7 @@
 import { Editor } from "draft-js";
 import "draft-js/dist/Draft.css";
 import InputBase from "../../molecules/InputBase";
-import "./RichTextEditor.css";
+import "./RichTextInput.css";
 import { IRichTextInputProps } from "./RichTextInput.type";
 import useRichTextInputManager from "./useRichTextInputManager.hook";
 
