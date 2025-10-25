@@ -7,7 +7,7 @@ interface ISideCTAProps {
 
 const SideCTA = ({ onClickCreateNewJob }: ISideCTAProps) => {
   return (
-    <aside>
+    <aside className="max-md:hidden">
       <div className="flex flex-col gap-y-6 p-6 rounded-2xl relative overflow-hidden before:absolute before:inset-0 before:bg-black before:opacity-[0.72] before:z-10">
         <div className="overflow-hidden absolute inset-0">
           <Image

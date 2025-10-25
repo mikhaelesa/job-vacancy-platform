@@ -67,3 +67,34 @@ export async function POST(req: Request) {
 
   return Response.json({ message: "Successfully created new job", data });
 }
+
+export async function GET(req: Request) {
+  const accessToken = req.headers.get("Authorization")?.split(" ")[1];
+  if (!accessToken)
+    return Response.json({ message: "Unauthorized" }, { status: 401 });
+
+  const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(
+    accessToken
+  );
+  if (userError || !userData?.user)
+    return Response.json({ message: "Unauthorized" }, { status: 401 });
+
+  const recruiterId = userData.user.id;
+
+  const { searchParams } = new URL(req.url);
+  const search = searchParams.get("search")?.trim() ?? "";
+
+  let query = supabaseAdmin
+    .from("jobs")
+    .select("*")
+    .eq("recruiter_id", recruiterId)
+    .order("created_at", { ascending: false });
+
+  if (search) query = query.or(`name.ilike.%${search}%`);
+
+  const { data, error } = await query;
+
+  if (error) return Response.json({ message: error.message }, { status: 500 });
+
+  return Response.json({ message: "Success retrieving jobs", data });
+}
