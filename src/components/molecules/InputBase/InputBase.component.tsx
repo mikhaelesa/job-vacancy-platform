@@ -11,6 +11,7 @@ interface IInputProps {
   isActive?: boolean;
   isError?: boolean;
   isDisabled?: boolean;
+  helperMessageIcon?: ReactNode;
 }
 
 const InputBase = ({
@@ -23,6 +24,7 @@ const InputBase = ({
   isActive,
   isError,
   isDisabled,
+  helperMessageIcon,
 }: IInputProps) => {
   return (
     <div className="flex flex-col gap-y-2">
@@ -51,7 +53,17 @@ const InputBase = ({
         </div>
       </label>
       {helperMessage && (
-        <span className="text-s text-neutral-70">Error message</span>
+        <div className="flex gap-x-1 items-center">
+          {helperMessageIcon && helperMessageIcon}
+          <span
+            className={clsx(
+              "text-s",
+              isError ? "text-danger-main" : "text-neutral-70"
+            )}
+          >
+            {helperMessage}
+          </span>
+        </div>
       )}
     </div>
   );

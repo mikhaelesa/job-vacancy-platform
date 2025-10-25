@@ -3,9 +3,10 @@ import { ComponentProps, useState } from "react";
 
 interface ITextInputProps extends ComponentProps<typeof InputBase> {
   placeholder?: string;
+  name?: string;
 }
 
-const TextInput = ({ placeholder, ...props }: ITextInputProps) => {
+const TextInput = ({ placeholder, name, ...props }: ITextInputProps) => {
   const [isActive, setIsActive] = useState(false);
   return (
     <InputBase isActive={isActive} {...props}>
@@ -17,6 +18,7 @@ const TextInput = ({ placeholder, ...props }: ITextInputProps) => {
         disabled={props.isDisabled}
         onFocus={() => setIsActive(true)}
         onBlur={() => setIsActive(false)}
+        name={name}
       />
     </InputBase>
   );
