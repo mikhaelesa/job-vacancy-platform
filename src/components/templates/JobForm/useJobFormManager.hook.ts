@@ -1,18 +1,31 @@
+import { RichTextInputChangeHandler } from "@/src/components/organisms/RichTextInput/RichTextInput.type";
 import { ISelectOption } from "@/src/components/organisms/SelectInput/SelectInput.component";
+import { QUERY_KEYS } from "@/src/constants/queryKeys.constant";
 import { ICreateJobRequestBody } from "@/src/dto/createJob.dto";
 import useCreateJobMutation from "@/src/hooks/mutation/useCreateJobMutation.hook";
 import useGetJobTypesQuery from "@/src/hooks/queries/useGetJobTypesQuery.hook";
+import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ChangeEventHandler, MouseEventHandler, useState } from "react";
-import { RichTextInputChangeHandler } from "../../organisms/RichTextInput/RichTextInput.type";
+import {
+  ChangeEventHandler,
+  Dispatch,
+  MouseEventHandler,
+  SetStateAction,
+  useState,
+} from "react";
 
-const useJobFormManager = () => {
+const useJobFormManager = ({
+  setIsOpen,
+}: {
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+}) => {
   const jobTypesQuery = useGetJobTypesQuery();
   const jobTypesData = jobTypesQuery.data?.data.data;
   const jobTypesOptions = jobTypesData?.map<ISelectOption>((jobType) => ({
     label: jobType.name,
     value: jobType.id.toString(),
   }));
+  const queryClient = useQueryClient();
   const createJobMutation = useCreateJobMutation();
   const [createJobData, setCreateJobData] = useState<
     Partial<ICreateJobRequestBody>
@@ -54,6 +67,13 @@ const useJobFormManager = () => {
             }
             setApiError(mapped);
           }
+        },
+        onSuccess: async () => {
+          await queryClient.refetchQueries({
+            queryKey: [QUERY_KEYS.getRecruiterOwnJobs],
+            type: "all",
+          });
+          setIsOpen?.(false);
         },
       }
     );

@@ -18,7 +18,9 @@ interface IJobFormProps {
 }
 
 const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
-  const manager = useJobFormManager();
+  const manager = useJobFormManager({
+    setIsOpen,
+  });
 
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen?.(false)}>
