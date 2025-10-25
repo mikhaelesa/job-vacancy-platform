@@ -28,6 +28,8 @@ const useSignUpManager = () => {
     email: "",
     password: "",
     role: USER_ROLE.applicant,
+    fullName: "",
+    companyName: null,
   });
   const [submitCount, setSubmitCount] = useState(0);
   const [apiError, setApiError] = useState({ email: "", password: "" });
@@ -41,6 +43,17 @@ const useSignUpManager = () => {
       emptyPassword: {
         errorMessage: "Password must be filled",
         rule: () => submitCount > 0 && !signUpData.password,
+      },
+      emptyFullName: {
+        errorMessage: "Full name must be filled",
+        rule: () => submitCount > 0 && !signUpData.fullName,
+      },
+      emptyCompanyName: {
+        errorMessage: "Company name must be filled",
+        rule: () =>
+          submitCount > 0 &&
+          signUpData.role === USER_ROLE.recruiter &&
+          !signUpData.companyName,
       },
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,6 +106,18 @@ const useSignUpManager = () => {
       ...prev,
       email: e.target.value,
     }));
+  const getChangeFullNameHandler: ChangeEventHandler<HTMLInputElement> = (e) =>
+    setSignUpData((prev) => ({
+      ...prev,
+      fullName: e.target.value,
+    }));
+  const getChangeCompanyNameHandler: ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) =>
+    setSignUpData((prev) => ({
+      ...prev,
+      companyName: e.target.value,
+    }));
   const getChangePasswordHandler: ChangeEventHandler<HTMLInputElement> = (e) =>
     setSignUpData((prev) => ({
       ...prev,
@@ -133,6 +158,8 @@ const useSignUpManager = () => {
     getChangePasswordHandler,
     apiError,
     getChangeRoleHandler,
+    getChangeFullNameHandler,
+    getChangeCompanyNameHandler,
   };
 };
 

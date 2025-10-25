@@ -4,6 +4,8 @@ export interface ISignUpRequestBody {
   email: string;
   password: string;
   role: string;
+  fullName: string;
+  companyName: string | null;
 }
 
 export interface ISignUpSuccessResponse {

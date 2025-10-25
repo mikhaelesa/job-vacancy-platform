@@ -6,7 +6,9 @@ import Checkbox from "@/src/components/molecules/Checkbox";
 import Modal from "@/src/components/molecules/Modal/Modal.component";
 import EmailInput from "@/src/components/organisms/EmailInput";
 import PasswordInput from "@/src/components/organisms/PasswordInput";
+import TextInput from "@/src/components/organisms/TextInput";
 import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
+import { USER_ROLE } from "@/src/constants/userRole.constant";
 import Link from "next/link";
 import useSignUpManager from "../hooks/useSignUpManager.hook";
 
@@ -41,6 +43,13 @@ const SignUpView = () => {
               Login
             </Link>
           </span>
+          <TextInput
+            placeholder="Ex. John Doe"
+            label="Full Name"
+            isRequired
+            value={manager.signUpData.fullName}
+            onChange={manager.getChangeFullNameHandler}
+          />
           <EmailInput
             isError={
               !!manager.apiError.email ||
@@ -78,6 +87,15 @@ const SignUpView = () => {
             />
             <p>Register as Recruiter</p>
           </div>
+          {manager.signUpData.role === USER_ROLE.recruiter && (
+            <TextInput
+              placeholder="Ex. Acme Corp"
+              label="Company Name"
+              isRequired
+              value={manager.signUpData.companyName || ""}
+              onChange={manager.getChangeCompanyNameHandler}
+            />
+          )}
           <Button
             disabled={manager.isPending}
             size="large"
