@@ -13,18 +13,24 @@ const RichTextInput = ({ onChange, value, ...props }: IRichTextInputProps) => {
   });
 
   return (
-    <InputBase {...props} isActive={manager.isActive}>
-      <Editor
-        onFocus={() => manager.setIsActive(true)}
-        onBlur={() => manager.setIsActive(false)}
-        handleKeyCommand={manager.getKeyCommandHandler}
-        editorState={manager.editorState}
-        onChange={manager.getChangeHandler}
-        handleBeforeInput={manager.getBeforeInputHandler}
-        keyBindingFn={manager.getKeyBindingFn}
-        ref={manager.editorRef}
-      />
-    </InputBase>
+    <button
+      onClick={() => manager.editorRef.current?.focus()}
+      className="text-left"
+      type="button"
+    >
+      <InputBase {...props} isActive={manager.isActive}>
+        <Editor
+          onFocus={() => manager.setIsActive(true)}
+          onBlur={() => manager.setIsActive(false)}
+          handleKeyCommand={manager.getKeyCommandHandler}
+          editorState={manager.editorState}
+          onChange={manager.getChangeHandler}
+          handleBeforeInput={manager.getBeforeInputHandler}
+          keyBindingFn={manager.getKeyBindingFn}
+          ref={manager.editorRef}
+        />
+      </InputBase>
+    </button>
   );
 };
 
