@@ -104,8 +104,16 @@ const useSignUpManager = () => {
       role: value ? USER_ROLE.recruiter : USER_ROLE.applicant,
     }));
 
-  const getCloseModalHandler = () =>
+  const getCloseModalHandler = () => {
     paramsManager.removeParams([SEARCH_PARAMS.signUp]);
+    setSubmitCount(0);
+    setApiError({ email: "", password: "" });
+    setSignUpData((prev) => ({
+      ...prev,
+      email: "",
+      password: "",
+    }));
+  };
 
   return {
     getSignUpHandler,

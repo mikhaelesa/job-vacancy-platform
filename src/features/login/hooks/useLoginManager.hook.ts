@@ -42,11 +42,16 @@ const useLoginManager = () => {
   }, [submitCount]);
   const formValidator = useFormValidator(validationSchema);
 
-  const getCloseModalHandler = () =>
+  const getCloseModalHandler = () => {
     paramsManager.removeParams([SEARCH_PARAMS.login]);
+    setApiError("");
+    setSubmitCount(0);
+    setLoginData({ email: "", password: "" });
+  };
 
   const getLoginHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setApiError("");
     setSubmitCount((prev) => (prev += 1));
     if (!loginData.email || !loginData.password) return;
 
