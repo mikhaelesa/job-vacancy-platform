@@ -1,3 +1,4 @@
+"use client";
 import { USER_ROLE } from "@/src/constants/userRole.constant";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -21,7 +22,7 @@ function withRecruiterRole<P>(
     if (auth.isLoading) return <Spinner />;
 
     if (auth.role !== USER_ROLE.recruiter) {
-      options?.onUnauthorized?.(router);
+      if (options?.onUnauthorized) options?.onUnauthorized?.(router);
       if (options?.renderUnauthorizedComponent)
         return options.renderUnauthorizedComponent();
 
