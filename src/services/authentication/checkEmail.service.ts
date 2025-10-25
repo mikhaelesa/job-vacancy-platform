@@ -1,10 +1,10 @@
-import { AxiosResponse } from "axios";
-import apiClient from "../../api/client";
+import apiClient from "@/src/api/client";
 import {
   ICheckEmailErrorResponse,
   ICheckEmailRequestBody,
   ICheckEmailSuccessResponse,
-} from "../../dto/checkEmail.dto";
+} from "@/src/dto/checkEmail.dto";
+import { AxiosResponse } from "axios";
 
 export const checkEmailService = <
   T = ICheckEmailErrorResponse | ICheckEmailSuccessResponse
