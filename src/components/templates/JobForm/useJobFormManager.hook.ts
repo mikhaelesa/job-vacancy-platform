@@ -1,11 +1,10 @@
-import {
-  ICreateJobRequestBody,
-  TProfileInformation,
-} from "@/src/dto/createJob.dto";
+import { ISelectOption } from "@/src/components/organisms/SelectInput/SelectInput.component";
+import { ICreateJobRequestBody } from "@/src/dto/createJob.dto";
+import useCreateJobMutation from "@/src/hooks/mutation/useCreateJobMutation.hook";
 import useGetJobTypesQuery from "@/src/hooks/queries/useGetJobTypesQuery.hook";
-import { ChangeEventHandler, useState } from "react";
+import { AxiosError } from "axios";
+import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { RichTextInputChangeHandler } from "../../organisms/RichTextInput/RichTextInput.type";
-import { ISelectOption } from "../../organisms/SelectInput/SelectInput.component";
 
 const useJobFormManager = () => {
   const jobTypesQuery = useGetJobTypesQuery();
@@ -14,10 +13,11 @@ const useJobFormManager = () => {
     label: jobType.name,
     value: jobType.id.toString(),
   }));
+  const createJobMutation = useCreateJobMutation();
   const [createJobData, setCreateJobData] = useState<
     Partial<ICreateJobRequestBody>
   >({
-    description: "",
+    description: undefined,
     jobTypeId: undefined,
     maximumSalary: undefined,
     minimumSalary: undefined,
@@ -34,6 +34,30 @@ const useJobFormManager = () => {
       email: "mandatory",
     },
   });
+  const [apiError, setApiError] = useState<Record<string, string>>();
+
+  const getSubmitHandler: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    setApiError({});
+
+    await createJobMutation.mutateAsync(
+      createJobData as ICreateJobRequestBody,
+      {
+        onError: (e) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const error = e as AxiosError<any>;
+          if (error.response?.data?.errors) {
+            const mapped: Record<string, string> = {};
+            for (const [key, messages] of Object.entries(
+              error.response?.data?.errors
+            )) {
+              mapped[key] = (messages as string[])[0];
+            }
+            setApiError(mapped);
+          }
+        },
+      }
+    );
+  };
 
   const getChangeJobNameHandler: ChangeEventHandler<HTMLInputElement> = (e) =>
     setCreateJobData((prev) => ({
@@ -68,51 +92,56 @@ const useJobFormManager = () => {
   const getChangeGenderSettingHandler: ChangeEventHandler<HTMLInputElement> = (
     e
   ) =>
+    // @ts-expect-error TODO: Check this type issue later
     setCreateJobData((prev) => ({
       ...prev,
       minimumProfileInformation: {
         ...prev.minimumProfileInformation,
-        gender: e.target.value as TProfileInformation,
+        gender: e.target.value,
       },
     }));
   const getChangeDomicileSettingHandler: ChangeEventHandler<
     HTMLInputElement
   > = (e) =>
+    // @ts-expect-error TODO: Check this type issue later
     setCreateJobData((prev) => ({
       ...prev,
       minimumProfileInformation: {
         ...prev.minimumProfileInformation,
-        domicile: e.target.value as TProfileInformation,
+        domicile: e.target.value,
       },
     }));
   const getChangePhoneNumberSettingHandler: ChangeEventHandler<
     HTMLInputElement
   > = (e) =>
+    // @ts-expect-error TODO: Check this type issue later
     setCreateJobData((prev) => ({
       ...prev,
       minimumProfileInformation: {
         ...prev.minimumProfileInformation,
-        phoneNumber: e.target.value as TProfileInformation,
+        phoneNumber: e.target.value,
       },
     }));
   const getChangeLinkedinSettingHandler: ChangeEventHandler<
     HTMLInputElement
   > = (e) =>
+    // @ts-expect-error TODO: Check this type issue later
     setCreateJobData((prev) => ({
       ...prev,
       minimumProfileInformation: {
         ...prev.minimumProfileInformation,
-        linkedin: e.target.value as TProfileInformation,
+        linkedin: e.target.value,
       },
     }));
   const getChangeDateOfBirthSettingHandler: ChangeEventHandler<
     HTMLInputElement
   > = (e) =>
+    // @ts-expect-error TODO: Check this type issue later
     setCreateJobData((prev) => ({
       ...prev,
       minimumProfileInformation: {
         ...prev.minimumProfileInformation,
-        dateOfBirth: e.target.value as TProfileInformation,
+        dateOfBirth: e.target.value,
       },
     }));
 
@@ -131,6 +160,8 @@ const useJobFormManager = () => {
     getChangeLinkedinSettingHandler,
     getChangeDateOfBirthSettingHandler,
     getChangeDescriptionHandler,
+    getSubmitHandler,
+    apiError,
   };
 };
 

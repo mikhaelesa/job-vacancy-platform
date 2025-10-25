@@ -1,8 +1,10 @@
 import { supabaseAdmin } from "@/src/constants/supabaseAdmin.constant";
 import { USER_ROLE } from "@/src/constants/userRole.constant";
-import { ICreateJobRequestBody } from "@/src/dto/createJob.dto";
+import {
+  CreateJobSchema,
+  ICreateJobRequestBody,
+} from "@/src/dto/createJob.dto";
 
-// Create job
 export async function POST(req: Request) {
   const accessToken = req.headers.get("Authorization")?.split(" ")[1];
   if (!accessToken)
@@ -24,25 +26,40 @@ export async function POST(req: Request) {
 
   const body: ICreateJobRequestBody = await req.json();
 
+  console.log(JSON.stringify(CreateJobSchema.safeParse(body), null, 2));
+
+  const parseResult = CreateJobSchema.safeParse(body);
+  if (!parseResult.success) {
+    return Response.json(
+      {
+        message: "Validation failed",
+        errors: parseResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
+  }
+
+  const validData = parseResult.data;
+
   const { data, error } = await supabaseAdmin
     .from("jobs")
     .insert([
       {
-        name: body.name,
+        name: validData.name,
         recruiter_id: userData.user.id,
-        description: body.description,
-        job_type_id: body.jobTypeId,
-        candidates_needed: body.candidateNeeded,
-        minimum_salary: body.minimumSalary,
-        maximum_salary: body.maximumSalary,
-        full_name_setting: body.minimumProfileInformation.fullName,
-        photo_profile_setting: body.minimumProfileInformation.photoProfile,
-        gender_setting: body.minimumProfileInformation.gender,
-        domicile_setting: body.minimumProfileInformation.domicile,
-        email_setting: body.minimumProfileInformation.email,
-        phone_number_setting: body.minimumProfileInformation.phoneNumber,
-        linkedin_setting: body.minimumProfileInformation.linkedin,
-        date_of_birth_setting: body.minimumProfileInformation.dateOfBirth,
+        description: validData.description,
+        job_type_id: validData.jobTypeId,
+        candidates_needed: validData.candidateNeeded,
+        minimum_salary: validData.minimumSalary,
+        maximum_salary: validData.maximumSalary,
+        full_name_setting: validData.minimumProfileInformation.fullName,
+        photo_profile_setting: validData.minimumProfileInformation.photoProfile,
+        gender_setting: validData.minimumProfileInformation.gender,
+        domicile_setting: validData.minimumProfileInformation.domicile,
+        email_setting: validData.minimumProfileInformation.email,
+        phone_number_setting: validData.minimumProfileInformation.phoneNumber,
+        linkedin_setting: validData.minimumProfileInformation.linkedin,
+        date_of_birth_setting: validData.minimumProfileInformation.dateOfBirth,
       },
     ])
     .select("*")

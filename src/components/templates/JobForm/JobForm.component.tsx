@@ -32,9 +32,11 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
             <IcClose />
           </button>
         </div>
-        <div className="px-6 py-4 flex flex-col gap-y-4">
+        <form className="px-6 py-4 flex flex-col gap-y-4">
           <LoadingBoundary isLoading={manager.jobTypesQuery.isLoading}>
             <TextInput
+              isError={!!manager.apiError?.name}
+              helperMessage={manager.apiError?.name}
               label="Job Name"
               isRequired
               name="jobName"
@@ -43,6 +45,8 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               onChange={manager.getChangeJobNameHandler}
             />
             <SelectInput
+              isError={!!manager.apiError?.jobTypeId}
+              helperMessage={manager.apiError?.jobTypeId}
               label="Job Type"
               placeholder="Select job type"
               isRequired
@@ -51,12 +55,16 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               onChange={manager.getChangeJobTypeHandler}
             />
             <RichTextInput
+              isError={!!manager.apiError?.description}
+              helperMessage={manager.apiError?.description}
               label="Job Description"
               isRequired
               value={manager.createJobData.description}
               onChange={manager.getChangeDescriptionHandler}
             />
             <NumberInput
+              isError={!!manager.apiError?.candidateNeeded}
+              helperMessage={manager.apiError?.candidateNeeded}
               label="Number of Candidate Needed"
               isRequired
               placeholder="Ex. 2"
@@ -70,12 +78,16 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               <p className="text-s">Job Salary</p>
               <div className="grid grid-cols-2 gap-x-12 w-full">
                 <CurrencyInput
+                  isError={!!manager.apiError?.minimumSalary}
+                  helperMessage={manager.apiError?.minimumSalary}
                   label="Minimum Estimated Salary"
                   placeholder="7.000.000"
                   value={manager.createJobData.minimumSalary}
                   onChange={manager.getChangeMinimumSalaryHandler}
                 />
                 <CurrencyInput
+                  isError={!!manager.apiError?.maximumSalary}
+                  helperMessage={manager.apiError?.maximumSalary}
                   label="Maximum Estimated Salary"
                   placeholder="8.000.000"
                   value={manager.createJobData.maximumSalary}
@@ -288,9 +300,11 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               </div>
             </div>
           </LoadingBoundary>
-        </div>
+        </form>
         <div className="flex flex-col p-6 border-t border-neutral-40">
-          <Button className="self-end">Publish Job</Button>
+          <Button onClick={manager.getSubmitHandler} className="self-end">
+            Publish Job
+          </Button>
         </div>
       </Modal.Content>
     </Modal>
