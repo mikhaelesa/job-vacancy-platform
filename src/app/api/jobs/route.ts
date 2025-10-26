@@ -13,6 +13,10 @@ export async function GET() {
     job_type:job_types (
       id,
       name
+    ),
+    city:cities (
+      id,
+      name
     )
   `
     )

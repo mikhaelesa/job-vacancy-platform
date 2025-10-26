@@ -7,8 +7,12 @@ export interface IJobsSuccessResponse {
     description: string;
     job_type_id: number;
     job_type: {
-      id: 1;
-      name: "Full Time";
+      id: number;
+      name: string;
+    };
+    city: {
+      id: number;
+      name: string;
     };
     candidates_needed: number;
     minimum_salary: number;

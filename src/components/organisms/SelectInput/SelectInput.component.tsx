@@ -66,7 +66,7 @@ const SelectInput = ({
         )}
       </Dropdown.Head>
       <Dropdown.Body>
-        <div className="absolute bg-neutral-10 left-0 right-0 shadow-modal py-2 rounded-lg border border-neutral-40 top-[92px] z-10">
+        <div className="absolute bg-neutral-10 left-0 right-0 shadow-modal py-2 rounded-lg border border-neutral-40 top-[92px] z-10 max-h-58 overflow-y-auto">
           {options?.map((option, i) => (
             <Dropdown.Item key={`${i}-${option.label}-${option.value}`}>
               {({ onToggleDropdown }) => (

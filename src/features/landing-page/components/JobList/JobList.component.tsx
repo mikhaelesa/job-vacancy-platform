@@ -26,6 +26,7 @@ const JobList = () => {
             id={job.id}
             isActive={searchParams.get(SEARCH_PARAMS.jobId) === job.id}
             name={job.name}
+            city={job.city?.name}
             companyName={job.recruiter.company_name}
             minimumSalary={job.minimum_salary}
             maximumSalary={job.maximum_salary}

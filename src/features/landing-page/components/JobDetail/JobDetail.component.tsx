@@ -13,8 +13,8 @@ const JobDetail = () => {
   const targetJob = jobs?.find((job) => job.id === jobId);
 
   return (
-    <div className="border border-neutral-40 p-6 rounded-lg flex flex-col gap-y-6 max-h-[calc(100vh-144px)] h-screen overflow-y-auto">
-      <div className="flex flex-col gap-y-6 sticky top-0 bg-neutral-10">
+    <div className="border border-neutral-40 rounded-lg flex flex-col gap-y-6 max-h-[calc(100vh-144px)] h-screen overflow-y-auto">
+      <div className="flex flex-col gap-y-6 sticky top-0 bg-neutral-10 p-6 pb-0">
         <div className="flex justify-between items-start">
           <div className="flex flex-col gap-y-2">
             <Tag
@@ -37,7 +37,7 @@ const JobDetail = () => {
       </div>
       {targetJob?.description && (
         <div
-          className="dangerously-set-inner-html"
+          className="dangerously-set-inner-html p-6 pt-0"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(targetJob?.description),
           }}

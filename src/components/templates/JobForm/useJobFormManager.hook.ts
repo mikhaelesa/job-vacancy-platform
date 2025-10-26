@@ -3,6 +3,7 @@ import { ISelectOption } from "@/src/components/organisms/SelectInput/SelectInpu
 import { QUERY_KEYS } from "@/src/constants/queryKeys.constant";
 import { ICreateJobRequestBody } from "@/src/dto/createJob.dto";
 import useCreateJobMutation from "@/src/hooks/mutation/useCreateJobMutation.hook";
+import useGetDomicilesQuery from "@/src/hooks/queries/useGetDomicilesQuery.hook";
 import useGetJobTypesQuery from "@/src/hooks/queries/useGetJobTypesQuery.hook";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -25,6 +26,12 @@ const useJobFormManager = ({
     label: jobType.name,
     value: jobType.id.toString(),
   }));
+  const domicilesQuery = useGetDomicilesQuery();
+  const domicilesData = domicilesQuery.data?.data.data;
+  const locationOptions = domicilesData?.map<ISelectOption>((domicile) => ({
+    label: domicile.name,
+    value: domicile.city_id.toString(),
+  }));
   const queryClient = useQueryClient();
   const createJobMutation = useCreateJobMutation();
   const [createJobData, setCreateJobData] = useState<
@@ -36,6 +43,7 @@ const useJobFormManager = ({
     minimumSalary: undefined,
     name: "",
     candidateNeeded: undefined,
+    cityId: undefined,
     minimumProfileInformation: {
       dateOfBirth: "mandatory",
       domicile: "mandatory",
@@ -88,6 +96,11 @@ const useJobFormManager = ({
     setCreateJobData((prev) => ({
       ...prev,
       jobTypeId: parseInt(option.value),
+    }));
+  const getChangeLocationHandler = (option: ISelectOption) =>
+    setCreateJobData((prev) => ({
+      ...prev,
+      cityId: parseInt(option.value),
     }));
   const getChangeDescriptionHandler: RichTextInputChangeHandler = (html) =>
     setCreateJobData((prev) => ({
@@ -167,6 +180,7 @@ const useJobFormManager = ({
 
   return {
     jobTypesOptions,
+    getChangeLocationHandler,
     getChangeMaximumSalaryHandler,
     jobTypesQuery,
     getChangeJobNameHandler,
@@ -182,6 +196,7 @@ const useJobFormManager = ({
     getChangeDescriptionHandler,
     getSubmitHandler,
     apiError,
+    locationOptions,
   };
 };
 

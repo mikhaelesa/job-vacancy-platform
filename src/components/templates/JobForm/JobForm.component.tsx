@@ -56,6 +56,16 @@ const JobForm = ({ isOpen, setIsOpen }: IJobFormProps) => {
               options={manager.jobTypesOptions}
               onChange={manager.getChangeJobTypeHandler}
             />
+            <SelectInput
+              isError={!!manager.apiError?.cityId}
+              helperMessage={manager.apiError?.cityId}
+              label="Location"
+              placeholder="Select location"
+              isRequired
+              name="cityId"
+              options={manager.locationOptions}
+              onChange={manager.getChangeLocationHandler}
+            />
             <RichTextInput
               isError={!!manager.apiError?.description}
               helperMessage={manager.apiError?.description}

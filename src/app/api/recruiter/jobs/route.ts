@@ -47,6 +47,7 @@ export async function POST(req: Request) {
         recruiter_id: userData.user.id,
         description: validData.description,
         job_type_id: validData.jobTypeId,
+        city_id: validData.cityId,
         candidates_needed: validData.candidateNeeded,
         minimum_salary: validData.minimumSalary,
         maximum_salary: validData.maximumSalary,

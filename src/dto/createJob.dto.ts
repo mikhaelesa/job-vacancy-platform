@@ -10,6 +10,7 @@ export const CreateJobSchema = z
     candidateNeeded: z.number().int().min(1, "At least 1 candidate required"),
     minimumSalary: z.number().nonnegative().optional(),
     maximumSalary: z.number().nonnegative().optional(),
+    cityId: z.number("Location must be selected"),
     minimumProfileInformation: z.object({
       fullName: TProfileInformationEnum,
       photoProfile: TProfileInformationEnum,
