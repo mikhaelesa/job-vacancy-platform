@@ -1,0 +1,25 @@
+import { supabaseAdmin } from "@/src/constants/supabaseAdmin.constant";
+
+export async function GET() {
+  const { data, error } = await supabaseAdmin
+    .from("jobs")
+    .select(
+      `
+    *,
+    recruiter:profiles (
+      id,
+      company_name
+    ),
+    job_type:job_types (
+      id,
+      name
+    )
+  `
+    )
+    .order("created_at", { ascending: false });
+
+  if (error)
+    return Response.json({ message: error.message, error }, { status: 500 });
+
+  return Response.json({ message: "Success retrieving jobs", data });
+}

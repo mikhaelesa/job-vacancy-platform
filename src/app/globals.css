@@ -89,3 +89,16 @@ body.modal-open {
   overflow: hidden;
   padding-right: var(--scrollbar-width, 0);
 }
+
+.dangerously-set-inner-html ul,
+.dangerously-set-inner-html ol {
+  padding-left: 20px;
+}
+
+.dangerously-set-inner-html ul {
+  list-style-type: disc;
+}
+
+.dangerously-set-inner-html ol {
+  list-style-type: decimal;
+}
