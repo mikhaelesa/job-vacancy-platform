@@ -19,7 +19,7 @@ const AdminJobs = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar title="Job List" />
       <ErrorBoundary
         isError={manager.isError}
         errorComponent={

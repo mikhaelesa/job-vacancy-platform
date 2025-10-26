@@ -11,7 +11,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Dropdown from "../Dropdown";
 
-const Navbar = () => {
+interface INavbarProps {
+  title?: string;
+}
+
+const Navbar = ({ title }: INavbarProps) => {
   const auth = useAuth();
   const router = useRouter();
   const paramsManager = useParamsManager();
@@ -29,7 +33,7 @@ const Navbar = () => {
   return (
     <header>
       <nav className="flex justify-between items-center py-4.5 pl-5 pr-6">
-        <span className="text-xl font-bold">Job List</span>
+        <span className="text-xl font-bold">{title}</span>
         <div className="flex items-center gap-x-4">
           {auth.user && (
             <Dropdown className="relative">
