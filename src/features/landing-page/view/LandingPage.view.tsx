@@ -11,7 +11,7 @@ const LandingPageView = () => {
   return (
     <>
       <Navbar />
-      <main className="grid grid-cols-[300px_1fr] gap-x-6 max-w-[1200px] mx-auto my-10">
+      <main className="grid md:grid-cols-[300px_1fr] gap-x-6 max-w-[1200px] mx-auto my-10 px-4">
         <LoadingBoundary isLoading={isLoading}>
           <JobList />
           <JobDetail />

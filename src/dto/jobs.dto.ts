@@ -2,10 +2,8 @@ export interface IJobsSuccessResponse {
   data: {
     id: string;
     created_at: string;
-    recruiter_id: string;
     name: string;
     description: string;
-    job_type_id: number;
     job_type: {
       id: number;
       name: string;

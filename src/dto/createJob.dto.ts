@@ -58,5 +58,6 @@ export interface ICreateJobSuccessResponse {
     phone_number_setting: string;
     photo_profile_setting: string;
     recruiter_id: string;
+    city_id: number;
   };
 }
