@@ -2,13 +2,18 @@ import Button from "@/src/components/atoms/Button";
 import IcArrowLeft from "@/src/components/atoms/Icons/IcArrowLeft.component";
 import Tag from "@/src/components/molecules/Tag";
 import ErrorBoundary from "@/src/components/templates/ErrorBoundary";
+import { PATHS } from "@/src/constants/paths.constant";
+import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
 import clsx from "clsx";
 import DOMPurify from "isomorphic-dompurify";
-import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import useJobDetailManager from "../../hooks/useJobDetailManager.hook";
+import ErrorNoJobSelected from "../ErrorNoJobSelected";
 
 const JobDetail = () => {
   const manager = useJobDetailManager();
+  const searchParams = useSearchParams();
 
   return (
     <div
@@ -19,22 +24,7 @@ const JobDetail = () => {
     >
       <ErrorBoundary
         isError={!manager.targetJob}
-        errorComponent={
-          <div className="p-6 flex flex-col gap-y-4 items-center h-full justify-center">
-            <Image
-              src={"/images/empty-states/no-jobs.svg"}
-              width={300}
-              height={300}
-              alt="No job"
-            />
-            <div className="flex flex-col items-center">
-              <p className="text-l font-bold">No job selected.</p>
-              <span className="text-m">
-                Please select a job and view it here
-              </span>
-            </div>
-          </div>
-        }
+        errorComponent={<ErrorNoJobSelected />}
       >
         <div className="flex flex-col gap-y-6 sticky top-0 bg-neutral-10 p-6 pb-0">
           <button
@@ -59,7 +49,16 @@ const JobDetail = () => {
                 </p>
               </div>
             </div>
-            <Button variant="alternative-primary">Apply</Button>
+            {manager.canApply && (
+              <Link
+                href={PATHS.applyJob.replace(
+                  "[id]",
+                  searchParams.get(SEARCH_PARAMS.jobId) || ""
+                )}
+              >
+                <Button variant="alternative-primary">Apply</Button>
+              </Link>
+            )}
           </div>
           <div
             className="mt-6 border-t border-transparent
@@ -72,7 +71,7 @@ const JobDetail = () => {
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(manager.targetJob?.description),
             }}
-          ></div>
+          />
         )}
       </ErrorBoundary>
     </div>

@@ -8,7 +8,7 @@ import { USER_ROLE } from "@/src/constants/userRole.constant";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { useParamsManager } from "@/src/hooks/useParamsManager.hook";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Dropdown from "../Dropdown";
 
 interface INavbarProps {
@@ -18,9 +18,10 @@ interface INavbarProps {
 const Navbar = ({ title }: INavbarProps) => {
   const auth = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const paramsManager = useParamsManager();
-
   const isRecruiter = auth.role === USER_ROLE.recruiter;
+  const isInRecruiterDashboard = pathname.startsWith("/admin");
 
   const handleLogin = () =>
     paramsManager.appendParams({ [SEARCH_PARAMS.login]: "true" });
@@ -62,7 +63,7 @@ const Navbar = ({ title }: INavbarProps) => {
                       </button>
                     )}
                   </Dropdown.Item>
-                  {isRecruiter && (
+                  {isRecruiter && !isInRecruiterDashboard && (
                     <Dropdown.Item>
                       {() => (
                         <Link
@@ -70,6 +71,18 @@ const Navbar = ({ title }: INavbarProps) => {
                           className="p-2 cursor-pointer w-full hover:bg-primary-hover hover:text-neutral-10 text-m"
                         >
                           Recruiter Dashboard
+                        </Link>
+                      )}
+                    </Dropdown.Item>
+                  )}
+                  {isInRecruiterDashboard && (
+                    <Dropdown.Item>
+                      {() => (
+                        <Link
+                          href={PATHS.root}
+                          className="p-2 cursor-pointer w-full hover:bg-primary-hover hover:text-neutral-10 text-m"
+                        >
+                          Back to Home
                         </Link>
                       )}
                     </Dropdown.Item>
