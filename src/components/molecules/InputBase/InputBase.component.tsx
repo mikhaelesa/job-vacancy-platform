@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 interface IInputProps {
   iconLeft?: ReactNode;
@@ -12,6 +12,7 @@ interface IInputProps {
   isError?: boolean;
   isDisabled?: boolean;
   helperMessageIcon?: ReactNode;
+  onClick?: MouseEventHandler<HTMLLabelElement>;
 }
 
 const InputBase = ({
@@ -25,10 +26,11 @@ const InputBase = ({
   isError,
   isDisabled,
   helperMessageIcon,
+  onClick,
 }: IInputProps) => {
   return (
     <div className="flex flex-col gap-y-2 w-full">
-      <label>
+      <label onClick={onClick}>
         {label && (
           <span className="text-s">
             {label}

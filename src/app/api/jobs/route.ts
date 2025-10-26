@@ -20,6 +20,7 @@ export async function GET() {
     )
   `
     )
+    .eq("status", "active")
     .order("created_at", { ascending: false });
 
   if (error)

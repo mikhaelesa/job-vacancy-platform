@@ -1,3 +1,4 @@
+import { MONTHS } from "../constants/months.constant";
 import { StringFormatter } from "./stringFormatter.helper";
 
 export const DAYS = [
@@ -8,21 +9,6 @@ export const DAYS = [
   "thursday",
   "friday",
   "saturday",
-];
-
-export const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
 ];
 
 export const dateFormatter = (date: string) => {
