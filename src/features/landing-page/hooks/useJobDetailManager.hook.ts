@@ -2,17 +2,19 @@ import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
 import useGetJobsQuery from "@/src/hooks/queries/useGetJobsQuery.hook";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { useParamsManager } from "@/src/hooks/useParamsManager.hook";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const useJobDetailManager = () => {
   const auth = useAuth();
+  const pathname = usePathname();
   const getJobsQuery = useGetJobsQuery();
   const jobs = getJobsQuery.data?.data.data;
   const searchParams = useSearchParams();
-  const jobId = searchParams.get(SEARCH_PARAMS.jobId);
+  const jobId = searchParams.get(SEARCH_PARAMS.jobId) || "";
   const targetJob = jobs?.find((job) => job.id === jobId);
   const paramsManager = useParamsManager();
   const canApply = auth.user?.id !== targetJob?.recruiter.id;
+  const isAuthenticated = !!auth.user;
 
   const getClickBackHandler = () =>
     paramsManager.removeParams([SEARCH_PARAMS.jobId]);
@@ -26,6 +28,8 @@ const useJobDetailManager = () => {
     paramsManager,
     getClickBackHandler,
     canApply,
+    isAuthenticated,
+    pathname,
   };
 };
 

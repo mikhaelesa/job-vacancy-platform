@@ -7,13 +7,11 @@ import { SEARCH_PARAMS } from "@/src/constants/searchParams.constant";
 import clsx from "clsx";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import useJobDetailManager from "../../hooks/useJobDetailManager.hook";
 import ErrorNoJobSelected from "../ErrorNoJobSelected";
 
 const JobDetail = () => {
   const manager = useJobDetailManager();
-  const searchParams = useSearchParams();
 
   return (
     <div
@@ -51,10 +49,11 @@ const JobDetail = () => {
             </div>
             {manager.canApply && (
               <Link
-                href={PATHS.applyJob.replace(
-                  "[id]",
-                  searchParams.get(SEARCH_PARAMS.jobId) || ""
-                )}
+                href={
+                  manager.isAuthenticated
+                    ? PATHS.applyJob.replace("[id]", manager.jobId)
+                    : `${manager.pathname}?${SEARCH_PARAMS.jobId}=${manager.jobId}&${SEARCH_PARAMS.login}=true`
+                }
               >
                 <Button variant="alternative-primary">Apply</Button>
               </Link>
