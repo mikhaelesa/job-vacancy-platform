@@ -63,6 +63,7 @@ const AdminJobs = () => {
                   <div className="flex flex-col gap-y-4">
                     {manager.jobs?.map((job) => (
                       <AdminJobCard
+                        id={job.id}
                         createdAt={job.created_at}
                         status={job.status}
                         name={job.name}

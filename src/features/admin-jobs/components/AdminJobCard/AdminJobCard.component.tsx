@@ -1,7 +1,9 @@
 import Button from "@/src/components/atoms/Button";
+import { PATHS } from "@/src/constants/paths.constant";
 import { currencyFormatter } from "@/src/helpers/currencyFormatter.helper";
 import { dateFormatter } from "@/src/helpers/dateFormatter.helper";
 import clsx from "clsx";
+import Link from "next/link";
 
 interface IAdminJobCard {
   name?: string;
@@ -9,6 +11,7 @@ interface IAdminJobCard {
   maximumSalary?: number;
   status?: string;
   createdAt?: string;
+  id?: string;
 }
 
 const AdminJobCard = ({
@@ -17,6 +20,7 @@ const AdminJobCard = ({
   minimumSalary,
   maximumSalary,
   createdAt,
+  id,
 }: IAdminJobCard) => {
   const isActive = status === "active";
   return (
@@ -50,7 +54,11 @@ const AdminJobCard = ({
             {minimumSalary && maximumSalary ? "-" : null}{" "}
             {maximumSalary ? currencyFormatter(maximumSalary).toIDR() : null}
           </p>
-          <Button size="small">Manage Job</Button>
+          {id && (
+            <Link href={PATHS.manageJob.replace("[id]", id)}>
+              <Button size="small">Manage Job</Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

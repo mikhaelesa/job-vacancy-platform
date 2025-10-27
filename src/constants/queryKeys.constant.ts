@@ -1,4 +1,5 @@
 export const QUERY_KEYS = {
+  getJobApplicants: "GET_APPLICANTS",
   getJobTypes: "GET_JOB_TYPES",
   getJob: "GET_JOB",
   getPhoneCodes: "GET_PHONE_CODES",
