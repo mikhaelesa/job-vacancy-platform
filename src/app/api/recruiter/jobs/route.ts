@@ -8,6 +8,7 @@ import verifyUser from "@/src/helpers/verifyUser.helper";
 
 export async function POST(req: Request) {
   const { user } = await verifyUser(req);
+
   if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
 
   const role = user.user_metadata.role;

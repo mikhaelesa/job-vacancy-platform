@@ -1,9 +1,11 @@
 import Button from "@/src/components/atoms/Button";
 import IcClose from "@/src/components/atoms/Icons/IcClose.component";
+import IcUniconChevronRight from "@/src/components/atoms/Icons/IcUniconChevronRight.component";
 import IcUpload from "@/src/components/atoms/Icons/IcUpload.component";
 import Modal from "@/src/components/molecules/Modal/Modal.component";
 import Image from "next/image";
 import useProtectedPhotoProfileInputManager from "../../hooks/useProtectedPhotoProfileInputManager.hook";
+import HandPose from "../HandPose";
 
 interface IProtectedPhotoProfileInputProps {
   photoProfileSetting?: string;
@@ -61,7 +63,12 @@ const ProtectedPhotoProfileInput = ({
       >
         <Modal.Content className="w-full max-w-[637px]">
           <div className="p-6 flex items-center justify-between border-b border-neutral-40">
-            <p className="text-xl font-bold">Take Picture</p>
+            <div className="flex flex-col">
+              <p className="text-xl font-bold">Raise Your Hand to Capture </p>
+              <p className="text-s">
+                We&apos;ll take the photo once your hand pose is detected.
+              </p>
+            </div>
             <button
               type="button"
               onClick={() => {
@@ -73,20 +80,45 @@ const ProtectedPhotoProfileInput = ({
             </button>
           </div>
 
-          <div className="p-6">
+          <div className="flex flex-col gap-y-4 p-6 relative">
             <video
               ref={manager.videoRef}
               autoPlay
               playsInline
               className="w-full rounded-lg"
             />
+            <p className="text-s m">
+              To take a picture, follow the hand poses in the order shown below.
+              The system will automatically capture the image once the final
+              pose is detected.
+            </p>
+            <div className="flex gap-x-2 items-center justify-center">
+              <HandPose
+                isActive={manager.gestureSequence.includes(1)}
+                order={1}
+              />
+              <IcUniconChevronRight />
+              <HandPose
+                isActive={manager.gestureSequence.includes(2)}
+                order={2}
+              />
+              <IcUniconChevronRight />
+              <HandPose
+                isActive={manager.gestureSequence.includes(3)}
+                order={3}
+              />
+            </div>
+            {manager.countdown && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
+                <p className="text-white text-m font-bold">
+                  Capturing photo in
+                </p>
+                <p className="text-white text-display font-bold">
+                  {manager.countdown}
+                </p>
+              </div>
+            )}
             <canvas ref={manager.canvasRef} hidden />
-          </div>
-
-          <div className="p-6 border-t border-neutral-40">
-            <Button className="w-full" onClick={manager.getTakePictureHandler}>
-              Take picture
-            </Button>
           </div>
         </Modal.Content>
       </Modal>
