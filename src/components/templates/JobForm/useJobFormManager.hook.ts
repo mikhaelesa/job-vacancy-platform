@@ -2,6 +2,7 @@ import { RichTextInputChangeHandler } from "@/src/components/organisms/RichTextI
 import { ISelectOption } from "@/src/components/organisms/SelectInput/SelectInput.component";
 import { QUERY_KEYS } from "@/src/constants/queryKeys.constant";
 import { ICreateJobRequestBody } from "@/src/dto/createJob.dto";
+import parseErrorsZod from "@/src/helpers/parseErrorsZod.helper";
 import useCreateJobMutation from "@/src/hooks/mutation/useCreateJobMutation.hook";
 import useGetDomicilesQuery from "@/src/hooks/queries/useGetDomicilesQuery.hook";
 import useGetJobTypesQuery from "@/src/hooks/queries/useGetJobTypesQuery.hook";
@@ -65,14 +66,9 @@ const useJobFormManager = ({
       {
         onError: (e) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const error = e as AxiosError<any>;
-          if (error.response?.data?.errors) {
-            const mapped: Record<string, string> = {};
-            for (const [key, messages] of Object.entries(
-              error.response?.data?.errors
-            )) {
-              mapped[key] = (messages as string[])[0];
-            }
+          const errors = (e as AxiosError<any>).response?.data.errors;
+          if (errors) {
+            const mapped: Record<string, string> = parseErrorsZod(errors);
             setApiError(mapped);
           }
         },

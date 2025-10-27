@@ -17,6 +17,7 @@ interface IUseDatePickerParams {
   dateInstance: Date;
   /** Function to handle changes to the date instance. */
   onDateInstanceChange(date: Date): void;
+  selectTodaysDate?: boolean;
 }
 
 interface IDatepickerRef {
@@ -43,9 +44,10 @@ interface IDatepickerRef {
 const useDatepicker = ({
   dateInstance,
   onDateInstanceChange,
+  selectTodaysDate,
 }: IUseDatePickerParams) => {
   const datepickerRef = useRef<IDatepickerRef>({
-    selectedDate: dateInstance,
+    ...(selectTodaysDate && { selectedDate: dateInstance }),
   });
 
   /**

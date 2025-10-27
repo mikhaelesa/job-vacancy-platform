@@ -1,6 +1,7 @@
 export interface IJobSuccessResponse {
   data: {
     id: string;
+    is_applied: boolean;
     created_at: string;
     name: string;
     description: string;

@@ -5,12 +5,15 @@ interface IProtectedGenderInputProps {
   value: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   genderSetting?: string;
+  isError?: boolean;
+  helperMessage?: string;
 }
 
 const ProtectedGenderInput = ({
   value,
   onChange,
   genderSetting,
+  helperMessage,
 }: IProtectedGenderInputProps) => {
   if (!genderSetting || genderSetting === "off") return null;
   const isMandatory = genderSetting === "mandatory";
@@ -43,6 +46,7 @@ const ProtectedGenderInput = ({
           <p>She/her (female)</p>
         </div>
       </div>
+      <span className="text-danger-main text-s">{helperMessage}</span>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { supabaseClient } from "@/src/constants/supabaseClient.constant";
 import { USER_ROLE } from "@/src/constants/userRole.constant";
 import useAuth from "@/src/hooks/useAuth.hook";
 import { useParamsManager } from "@/src/hooks/useParamsManager.hook";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Dropdown from "../Dropdown";
@@ -16,6 +17,7 @@ interface INavbarProps {
 }
 
 const Navbar = ({ title }: INavbarProps) => {
+  const queryClient = useQueryClient();
   const auth = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -28,6 +30,7 @@ const Navbar = ({ title }: INavbarProps) => {
 
   const handleLogout = async () => {
     router.replace(PATHS.root);
+    queryClient.clear();
     await supabaseClient.auth.signOut();
   };
 

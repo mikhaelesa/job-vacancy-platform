@@ -36,9 +36,10 @@ const DatepickerInput = ({
   return (
     <Dropdown className="relative">
       <Dropdown.Head>
-        {({ onToggleDropdown }) => (
+        {({ onToggleDropdown, isOpen }) => (
           <InputBase
             {...props}
+            isActive={isOpen}
             onClick={onToggleDropdown}
             iconLeft={<IcCalendar width={16} height={16} />}
           >

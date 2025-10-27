@@ -19,6 +19,7 @@ const Button = ({
   variant = "primary",
   children,
   className,
+  leftIcon,
   ...props
 }: IButtonProps) => {
   return (
@@ -31,6 +32,7 @@ const Button = ({
       )}
       {...props}
     >
+      {leftIcon && leftIcon}
       {children}
     </button>
   );

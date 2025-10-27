@@ -4,19 +4,13 @@ import {
   CreateJobSchema,
   ICreateJobRequestBody,
 } from "@/src/dto/createJob.dto";
+import verifyUser from "@/src/helpers/verifyUser.helper";
 
 export async function POST(req: Request) {
-  const accessToken = req.headers.get("Authorization")?.split(" ")[1];
-  if (!accessToken)
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
+  const { user } = await verifyUser(req);
+  if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
 
-  const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(
-    accessToken
-  );
-  if (userError)
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-
-  const role = userData.user.user_metadata.role;
+  const role = user.user_metadata.role;
   if (role !== USER_ROLE.recruiter) {
     return Response.json(
       { error: "Forbidden: only recruiters can create jobs" },
@@ -25,7 +19,6 @@ export async function POST(req: Request) {
   }
 
   const body: ICreateJobRequestBody = await req.json();
-
   const parseResult = CreateJobSchema.safeParse(body);
   if (!parseResult.success) {
     return Response.json(
@@ -38,13 +31,12 @@ export async function POST(req: Request) {
   }
 
   const validData = parseResult.data;
-
   const { data, error } = await supabaseAdmin
     .from("jobs")
     .insert([
       {
         name: validData.name,
-        recruiter_id: userData.user.id,
+        recruiter_id: user.id,
         description: validData.description,
         job_type_id: validData.jobTypeId,
         city_id: validData.cityId,
@@ -65,23 +57,14 @@ export async function POST(req: Request) {
     .single();
 
   if (error) return Response.json({ message: error.message }, { status: 500 });
-
   return Response.json({ message: "Successfully created new job", data });
 }
 
 export async function GET(req: Request) {
-  const accessToken = req.headers.get("Authorization")?.split(" ")[1];
-  if (!accessToken)
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
+  const { user } = await verifyUser(req);
+  if (!user) return Response.json({ message: "Unauthorized" }, { status: 401 });
 
-  const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(
-    accessToken
-  );
-  if (userError || !userData?.user)
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-
-  const recruiterId = userData.user.id;
-
+  const recruiterId = user.id;
   const { searchParams } = new URL(req.url);
   const search = searchParams.get("search")?.trim() ?? "";
 
@@ -92,10 +75,8 @@ export async function GET(req: Request) {
     .order("created_at", { ascending: false });
 
   if (search) query = query.or(`name.ilike.%${search}%`);
-
   const { data, error } = await query;
 
   if (error) return Response.json({ message: error.message }, { status: 500 });
-
   return Response.json({ message: "Success retrieving jobs", data });
 }
