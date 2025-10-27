@@ -1,5 +1,7 @@
 import { supabaseAdmin } from "@/src/constants/supabaseAdmin.constant";
 
+const siteUrl = process.env.SITE_URL;
+
 export async function POST(req: Request) {
   const { email, password, role, fullName, companyName } = await req.json();
 
@@ -12,6 +14,7 @@ export async function POST(req: Request) {
         fullName,
         companyName,
       },
+      emailRedirectTo: siteUrl,
     },
   });
 
