@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import {
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
@@ -53,6 +54,7 @@ const Table = <TData extends RowData>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnOrder,
       pagination,

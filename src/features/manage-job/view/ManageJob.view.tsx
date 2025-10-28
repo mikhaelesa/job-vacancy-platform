@@ -258,7 +258,7 @@ const ManageJob = () => {
               </Button>
             </div>
             <div className="rounded-lg bg-neutral-10 border border-neutral-40 relative">
-              <Table columns={manager.columns} data={manager.jobApplicants!} />
+              <Table columns={manager.columns} data={testData} />
             </div>
           </main>
         </ErrorBoundary>

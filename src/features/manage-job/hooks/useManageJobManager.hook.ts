@@ -17,7 +17,8 @@ const useManageJobManager = () => {
   const jobApplicants = jobApplicantsQuery.data?.data.data;
   const jobQuery = useGetJobQuery(jobId);
   const job = jobQuery.data?.data.data;
-  const isNoApplicants = !jobApplicants?.length || !jobApplicants;
+  // const isNoApplicants = !jobApplicants?.length || !jobApplicants;
+  const isNoApplicants = false;
   const isLoading = jobApplicantsQuery.isLoading || jobQuery.isLoading;
   const isJobActive = job?.status === "active";
   const isUpdatingJobStatus = updateJobStatusMutation.isPending;

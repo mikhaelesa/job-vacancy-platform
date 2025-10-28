@@ -5,6 +5,7 @@ import { Header, RowData, flexRender } from "@tanstack/react-table";
 import clsx from "clsx";
 import { CSSProperties } from "react";
 import Sorter from "./Sorter.component";
+import TableFilter from "./TableFilter.component";
 
 const TableHeader = <TData extends RowData>({
   header,
@@ -35,7 +36,7 @@ const TableHeader = <TData extends RowData>({
       data-testid="thead"
       key={header.id}
     >
-      <div>
+      <div className="flex flex-col gap-y-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             {!header.isPlaceholder &&
@@ -46,6 +47,7 @@ const TableHeader = <TData extends RowData>({
             <IcArrowsHorizontal width={16} height={16} />
           </button>
         </div>
+        <TableFilter column={header.column} />
       </div>
     </th>
   );
