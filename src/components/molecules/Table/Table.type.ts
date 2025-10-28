@@ -1,9 +1,6 @@
-import { RowData, Table } from "@tanstack/react-table";
-import { ReactNode } from "react";
+import { ColumnDef, RowData } from "@tanstack/react-table";
 
 export interface ITableProps<TData extends RowData> {
-  table: Table<TData>;
-  errorMessage?: string | (() => ReactNode);
-  isLoading?: boolean;
-  canSelectRow?: boolean;
+  columns: ColumnDef<TData>[];
+  data: TData[];
 }

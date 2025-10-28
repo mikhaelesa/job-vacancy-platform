@@ -1,115 +1,178 @@
-import { flexRender, RowData } from "@tanstack/react-table";
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+  RowData,
+  useReactTable,
+} from "@tanstack/react-table";
 import clsx from "clsx";
-import IcSort from "../../atoms/Icons/IcSort.component";
-import IcSortAscending from "../../atoms/Icons/IcSortAscending.component";
-import IcSortDescending from "../../atoms/Icons/IcSortDescending.component";
+import { useState } from "react";
+import Button from "../../atoms/Button";
+import IcUniconChevronLeft from "../../atoms/Icons/IcUniconChevronLeft.component";
+import IcUniconChevronRight from "../../atoms/Icons/IcUniconChevronRight.component";
+import SelectInput from "../../organisms/SelectInput";
+import TableCell from "./components/TableCell.component";
+import TableHeader from "./components/TableHeader.component";
 import { ITableProps } from "./Table.type";
 
+// eslint-disable-next-line @typescript-eslint/no-array-constructor
+const EMPTY_ARR = new Array();
+
 const Table = <TData extends RowData>({
-  table,
-  canSelectRow,
+  columns,
+  data,
   ...props
 }: ITableProps<TData>) => {
-  return (
-    <table className="w-full border-separate" data-testid="table" {...props}>
-      <thead data-testid="table-head">
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              const isPinnedLeft = header.column.getIsPinned() === "left";
-              console.log(header.column.getCanSort());
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [columnOrder, setColumnOrder] = useState<string[]>(() =>
+    columns.map((column) => column.id!)
+  );
+  const table = useReactTable({
+    columns,
+    data: data || EMPTY_ARR,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      columnOrder,
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    onColumnOrderChange: setColumnOrder,
+  });
 
-              return (
-                <th
-                  onClick={
-                    header.column.getCanSort()
-                      ? header.column.getToggleSortingHandler()
-                      : undefined
-                  }
-                  className={clsx("text-s font-bold px-4 py-6 text-left", {
-                    "sticky z-30  bg-neutral-10 border-b border-b-neutral-30 border-r-4 border-r-neutral-20 shadow-sm mr-1":
-                      isPinnedLeft,
-                    "bg-neutral-20": !isPinnedLeft,
-                    "cursor-pointer": header.column.getCanSort(),
-                  })}
-                  style={{
-                    left: isPinnedLeft
-                      ? `${header.column.getStart("left")}px`
-                      : undefined,
-                  }}
-                  data-testid="thead"
-                  key={header.id}
-                >
-                  <div className="flex items-center gap-x-1">
-                    {!header.isPlaceholder &&
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    {header.column.getCanSort() ? (
-                      header.column.getNextSortingOrder() === "asc" ? (
-                        <IcSort width={16} height={16} />
-                      ) : header.column.getNextSortingOrder() === "desc" ? (
-                        <IcSortAscending
-                          width={16}
-                          height={16}
-                          data-testid="table-icon-sort-ascending"
-                        />
-                      ) : (
-                        <IcSortDescending
-                          width={16}
-                          height={16}
-                          data-testid="table-icon-sort-descending"
-                        />
-                      )
-                    ) : null}
-                  </div>
-                </th>
-              );
-            })}
-          </tr>
-        ))}
-      </thead>
-      <tbody data-testid="table-body">
-        {table.getRowCount() > 0 &&
-          table.getRowModel().rows.map((row) => (
-            <tr
-              className={clsx(
-                "hover:bg-green-4",
-                row.getIsSelected() && "bg-green-3"
-              )}
-              key={row.id}
-              data-testid="body-row"
-              {...{
-                ...(canSelectRow && {
-                  onClick: row.getToggleSelectedHandler(),
-                }),
-              }}
-            >
-              {row.getVisibleCells().map((cell) => {
-                const isPinnedLeft = cell.column.getIsPinned() === "left";
-                return (
-                  <td
-                    className={clsx("p-4 text-m", {
-                      "border-b border-b-neutral-30 border-r-4 border-r-neutral-20 sticky bg-neutral-10 z-20 shadow-sm mr-1":
-                        isPinnedLeft,
-                      "bg-neutral-20": !isPinnedLeft,
-                    })}
-                    style={{
-                      left: isPinnedLeft
-                        ? `${cell.column.getStart("left")}px`
-                        : undefined,
-                    }}
-                    key={cell.id}
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (active && over && active.id !== over.id) {
+      setColumnOrder((columnOrder) => {
+        const oldIndex = columnOrder.indexOf(active.id as string);
+        const newIndex = columnOrder.indexOf(over.id as string);
+        return arrayMove(columnOrder, oldIndex, newIndex);
+      });
+    }
+  }
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  );
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <DndContext
+          collisionDetection={closestCenter}
+          modifiers={[restrictToHorizontalAxis]}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+        >
+          <table
+            className="w-full border-separate"
+            data-testid="table"
+            {...props}
+          >
+            <thead data-testid="table-head">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  <SortableContext
+                    items={columnOrder}
+                    strategy={horizontalListSortingStrategy}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-      </tbody>
-    </table>
+                    {headerGroup.headers.map((header) => (
+                      <TableHeader header={header} key={header.id} />
+                    ))}
+                  </SortableContext>
+                </tr>
+              ))}
+            </thead>
+            <tbody data-testid="table-body">
+              {table.getRowCount() > 0 &&
+                table.getRowModel().rows.map((row) => (
+                  <tr
+                    className={clsx(
+                      "hover:bg-green-4",
+                      row.getIsSelected() && "bg-green-3"
+                    )}
+                    key={row.id}
+                    data-testid="body-row"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <SortableContext
+                        key={cell.id}
+                        items={columnOrder}
+                        strategy={horizontalListSortingStrategy}
+                      >
+                        <TableCell cell={cell} key={cell.id} />
+                      </SortableContext>
+                    ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </DndContext>
+      </div>
+      <div className="flex sticky bottom-0 bg-neutral-10 max-md:flex-col md:w-fit mx-auto md:items-center gap-2 p-4">
+        <div className="flex max-md:justify-between items-center gap-x-2">
+          <p className="text-m">
+            Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
+            {table.getRowCount().toLocaleString()} Rows
+          </p>
+          <div className="flex items-center gap-x-2">
+            <Button
+              onClick={table.previousPage}
+              disabled={!table.getCanPreviousPage()}
+              variant="outlined"
+              className="px-1!"
+            >
+              <IcUniconChevronLeft />
+            </Button>
+            <p className="text-m">
+              {table.getState().pagination.pageIndex + 1} /{" "}
+              {table.getPageCount().toLocaleString()}
+            </p>
+            <Button
+              onClick={table.nextPage}
+              disabled={!table.getCanNextPage()}
+              variant="outlined"
+              className="px-1!"
+            >
+              <IcUniconChevronRight />
+            </Button>
+          </div>
+        </div>
+        <SelectInput
+          defaultSelected={{ label: "Show 10", value: "10" }}
+          options={[
+            { label: "Show 5", value: "5" },
+            { label: "Show 10", value: "10" },
+            { label: "Show 15", value: "15" },
+            { label: "Show 20", value: "20" },
+            { label: "Show All", value: table.getRowCount().toString() },
+          ]}
+          onChange={(e) => table.setPageSize(Number(e.value))}
+        />
+      </div>
+    </>
   );
 };
 

@@ -3,19 +3,10 @@ import useUpdateJobStatusMutation from "@/src/hooks/mutation/useUpdateJobStatusM
 import useGetJobApplicantsQuery from "@/src/hooks/queries/useGetJobApplicantsQuery.hook";
 import useGetJobQuery from "@/src/hooks/queries/useGetJobQuery.hook";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  ColumnPinningState,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { toast } from "react-toastify";
 import { createApplicantsTableColumns } from "../constants/createApplicantsTableColumns.constant";
-
-// eslint-disable-next-line @typescript-eslint/no-array-constructor
-const EMPTY_ARR = new Array();
 
 const useManageJobManager = () => {
   const queryClient = useQueryClient();
@@ -26,25 +17,11 @@ const useManageJobManager = () => {
   const jobApplicants = jobApplicantsQuery.data?.data.data;
   const jobQuery = useGetJobQuery(jobId);
   const job = jobQuery.data?.data.data;
-  const isNoApplicants = !jobApplicants?.length;
+  const isNoApplicants = !jobApplicants?.length || !jobApplicants;
   const isLoading = jobApplicantsQuery.isLoading || jobQuery.isLoading;
   const isJobActive = job?.status === "active";
   const isUpdatingJobStatus = updateJobStatusMutation.isPending;
   const columns = useMemo(() => createApplicantsTableColumns(), []);
-  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
-    left: ["1"],
-  });
-  const table = useReactTable({
-    columns,
-    data: jobApplicants || EMPTY_ARR,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    enableSorting: true,
-    state: {
-      columnPinning,
-    },
-    onColumnPinningChange: setColumnPinning,
-  });
 
   const getUpdateJobStatusHandler = async () => {
     try {
@@ -71,12 +48,13 @@ const useManageJobManager = () => {
 
   return {
     job,
-    table,
     isLoading,
     getUpdateJobStatusHandler,
     isJobActive,
+    jobApplicants,
     isUpdatingJobStatus,
     isNoApplicants,
+    columns,
   };
 };
 
