@@ -50,6 +50,7 @@ const Table = <TData extends RowData>({
   const [columnOrder, setColumnOrder] = useState<string[]>(() =>
     columns.map((column) => column.id!)
   );
+
   const table = useReactTable({
     columns,
     data: data || EMPTY_ARR,
@@ -137,7 +138,7 @@ const Table = <TData extends RowData>({
           </table>
         </DndContext>
       </div>
-      <div className="flex sticky bottom-0 bg-neutral-10 max-md:flex-col md:w-fit mx-auto md:items-center gap-2 p-4">
+      <div className="flex sticky bottom-0 bg-neutral-10 max-md:flex-col mx-auto md:items-center gap-2 p-4">
         <div className="flex max-md:justify-between items-center gap-x-2">
           <p className="text-m">
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
@@ -167,6 +168,7 @@ const Table = <TData extends RowData>({
           </div>
         </div>
         <SelectInput
+          direction="top"
           defaultSelected={{ label: "Show 10", value: "10" }}
           options={[
             { label: "Show 5", value: "5" },

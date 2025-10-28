@@ -17,6 +17,7 @@ interface ISelectInputProps extends ComponentProps<typeof InputBase> {
   options?: ISelectOption[];
   defaultSelected?: ISelectOption;
   onChange?: (selectedOption: ISelectOption) => void;
+  direction?: "bottom" | "top";
 }
 
 const SelectInput = ({
@@ -25,6 +26,7 @@ const SelectInput = ({
   name,
   defaultSelected,
   onChange,
+  direction = "bottom",
   ...props
 }: ISelectInputProps) => {
   const [selectedOption, setSelectedOption] = useState<ISelectOption | null>(
@@ -67,7 +69,12 @@ const SelectInput = ({
         )}
       </Dropdown.Head>
       <Dropdown.Body>
-        <div className="absolute bg-neutral-10 left-0 right-0 shadow-modal py-2 rounded-lg border border-neutral-40 mt-2 z-10 max-h-58 overflow-y-auto">
+        <div
+          className={clsx(
+            "absolute bg-neutral-10 left-0 right-0 shadow-modal py-2 rounded-lg border border-neutral-40 z-10 max-h-58 overflow-y-auto",
+            direction === "bottom" ? "mt-2" : "bottom-[60px]"
+          )}
+        >
           {options?.map((option, i) => (
             <Dropdown.Item key={`${i}-${option.label}-${option.value}`}>
               {({ onToggleDropdown }) => (
