@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   ColumnPinningState,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
@@ -37,6 +38,8 @@ const useManageJobManager = () => {
     columns,
     data: jobApplicants || EMPTY_ARR,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    enableSorting: true,
     state: {
       columnPinning,
     },

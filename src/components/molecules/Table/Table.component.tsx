@@ -1,5 +1,8 @@
 import { flexRender, RowData } from "@tanstack/react-table";
 import clsx from "clsx";
+import IcSort from "../../atoms/Icons/IcSort.component";
+import IcSortAscending from "../../atoms/Icons/IcSortAscending.component";
+import IcSortDescending from "../../atoms/Icons/IcSortDescending.component";
 import { ITableProps } from "./Table.type";
 
 const Table = <TData extends RowData>({
@@ -14,12 +17,20 @@ const Table = <TData extends RowData>({
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               const isPinnedLeft = header.column.getIsPinned() === "left";
+              console.log(header.column.getCanSort());
+
               return (
                 <th
+                  onClick={
+                    header.column.getCanSort()
+                      ? header.column.getToggleSortingHandler()
+                      : undefined
+                  }
                   className={clsx("text-s font-bold px-4 py-6 text-left", {
                     "sticky z-30  bg-neutral-10 border-b border-b-neutral-30 border-r-4 border-r-neutral-20 shadow-sm mr-1":
                       isPinnedLeft,
                     "bg-neutral-20": !isPinnedLeft,
+                    "cursor-pointer": header.column.getCanSort(),
                   })}
                   style={{
                     left: isPinnedLeft
@@ -29,11 +40,30 @@ const Table = <TData extends RowData>({
                   data-testid="thead"
                   key={header.id}
                 >
-                  {!header.isPlaceholder &&
-                    flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                  <div className="flex items-center gap-x-1">
+                    {!header.isPlaceholder &&
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    {header.column.getCanSort() ? (
+                      header.column.getNextSortingOrder() === "asc" ? (
+                        <IcSort width={16} height={16} />
+                      ) : header.column.getNextSortingOrder() === "desc" ? (
+                        <IcSortAscending
+                          width={16}
+                          height={16}
+                          data-testid="table-icon-sort-ascending"
+                        />
+                      ) : (
+                        <IcSortDescending
+                          width={16}
+                          height={16}
+                          data-testid="table-icon-sort-descending"
+                        />
+                      )
+                    ) : null}
+                  </div>
                 </th>
               );
             })}
