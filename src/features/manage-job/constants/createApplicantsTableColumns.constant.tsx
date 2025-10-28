@@ -68,7 +68,11 @@ export const createApplicantsTableColumns = (): ColumnDef<
         : "-",
     header: "GENDER",
     enableSorting: true,
-    enableColumnFilter: false,
+    enableColumnFilter: true,
+    filterFn: "equals",
+    meta: {
+      filterVariant: "select",
+    },
   },
   {
     id: "7",
