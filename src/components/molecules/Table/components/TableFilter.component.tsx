@@ -34,11 +34,14 @@ const TableFilter = <TData extends RowData>({
         onChange={(e) => column.setFilterValue(e.target.value)}
       >
         <option value="">All</option>
-        {sortedUniqueValues.map((value) => (
-          <option value={value} key={value}>
-            {StringFormatter.capitalize(value)}
-          </option>
-        ))}
+        {sortedUniqueValues.map(
+          (value) =>
+            value && (
+              <option value={value} key={value}>
+                {StringFormatter.capitalize(value)}
+              </option>
+            )
+        )}
       </select>
     );
 
